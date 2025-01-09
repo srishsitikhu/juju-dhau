@@ -71,6 +71,7 @@ if (isset($run_cart) && $run_cart->num_rows > 0) {
                                 <th class='product-thumbnail'>Image</th>
                                 <th class='product-name'>Product Name</th>
                                 <th class='product-price'>Price</th>
+                                <th class='product-liter'>Litre</th>
                                 <th class='product-quantity'>Litre</th>
                                 <th class='product-subtotal'>Total</th>
                             </tr>
@@ -98,8 +99,15 @@ if (isset($run_cart) && $run_cart->num_rows > 0) {
                 <td class='product-price'>
                     <span class='price-symbol'>Rs.</span> $price
                 </td>
-                <td class='product-quantity'>
+                <td class='product-liter'>
                     <span>$option_name</span>
+                </td>
+                <td class='product-quantity'>
+                   <div class='quantity'>
+                        <span class='plus-btn btn-quantity'>+</span>
+                        <input type='number' class='quantity-input' name='product-quantity' value='$option_name' min='1' max='10' step='1' readonly>
+                        <span class='minus-btn btn-quantity'>-</span>
+                    </div>
                 </td>
                 <td class='product-subtotal'>
                     <span class='price-symbol'>Rs.</span> " . ($price * (float) $option_name) . "

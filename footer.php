@@ -45,7 +45,7 @@ include("database/connect.php");
             <h1 class="fMenuTitle">Subscribe to our newsletter</h1>
             <form action="#">
                 <div class="fMail">
-                    <input type="text" placeholder="your@email.com" class="fInput" />
+                    <input type="text" placeholder="your@email.com" class="fInput" required />
                     <button type="submit" name="newsletter-form" class="fButton">Join!</button>
                 </div>
             </form>

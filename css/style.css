@@ -137,6 +137,8 @@ nav {
   width: 45%;
   z-index: 1;
   transition: transform 0.3s ease;
+  height: 100%;
+  object-fit: contain; 
 }
 
 .sliderImage:hover {
