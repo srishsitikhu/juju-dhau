@@ -1,47 +1,57 @@
-// document.addEventListener("DOMContentLoaded", function() {
-//     // Attach event listeners to all "Add to Cart" buttons
-//     const addToCartButtons = document.querySelectorAll('.productButton');
+document.addEventListener('DOMContentLoaded', function () {
+  const cartRows = document.querySelectorAll('.cart-list tbody tr');
+  let cartSubtotal = document.getElementById('cart-subtotal');
+  let cartTotal = document.getElementById('cart-total');
 
-//     addToCartButtons.forEach(button => {
-//         button.addEventListener('click', function(event) {
-//             event.preventDefault();  // Prevent form submission
+  cartRows.forEach(row => {
+      const minusBtn = row.querySelector('.minus-btn');
+      const plusBtn = row.querySelector('.plus-btn');
+      const quantityInput = row.querySelector('.quantity-input');
+      const price = parseFloat(row.dataset.price);
+      const subtotalElement = row.querySelector('.subtotal-value');
 
-//             // Get the form element
-//             const form = button.closest('form');
-//             const product_id = form.querySelector('input[name="product_id"]').value;
-//             const selectedOption = form.querySelector('input[type="radio"]:checked');
-//             const option = selectedOption ? selectedOption.value : null;
+      function updateTotals() {
+          const quantity = parseInt(quantityInput.value);
+          const subtotal = price * quantity;
+          subtotalElement.textContent = subtotal.toFixed(2);
+          calculateGrandTotal();
+      }
 
-//             if (!option) {
-//                 alert("Please select a product option.");
-//                 return;
-//             }
+      function calculateGrandTotal() {
+          let total = 0;
+          cartRows.forEach(r => {
+              const qty = parseInt(r.querySelector('.quantity-input').value);
+              const price = parseFloat(r.dataset.price);
+              total += qty * price;
+          });
+          cartSubtotal.textContent = total.toFixed(2);
+          cartTotal.textContent = total.toFixed(2);
+      }
 
-//             // Prepare data to send via AJAX
-//             const formData = new FormData();
-//             formData.append('product_id', product_id);
-//             formData.append('option', option);
+      minusBtn.addEventListener('click', () => {
+          let quantity = parseInt(quantityInput.value);
+          if (quantity > 1) {
+              quantityInput.value = --quantity;
+              updateTotals();
+          }
+      });
 
-//             // Send AJAX request to update_cart.php
-//             fetch('update_cart.php', {
-//                 method: 'POST',
-//                 body: formData
-//             })
-//             .then(response => response.json())  // Parse JSON response
-//             .then(data => {
-//                 if (data.status === 'success') {
-//                     // If the request was successful, show success message
-//                     alert("Item added to cart successfully!");
-//                     location.reload();  // Reload the page to update cart count
-//                 } else {
-//                     // If there's an error (e.g., item already in cart or DB issues)
-//                     alert(`Error: ${data.message}`);  // Display the error message sent from PHP
-//                 }
-//             })
-//             .catch(error => {
-//                 console.error('Error:', error);  // Log the error in case of failure
-//                 alert('An error occurred while adding the item to the cart. Please try again.');
-//             });
-//         });
-//     });
-// });
+      plusBtn.addEventListener('click', () => {
+          let quantity = parseInt(quantityInput.value);
+          if (quantity < 10) {
+              quantityInput.value = ++quantity;
+              updateTotals();
+          }
+      });
+
+      quantityInput.addEventListener('change', () => {
+          const quantity = parseInt(quantityInput.value);
+          if (quantity >= 1 && quantity <= 10) {
+              updateTotals();
+          } else {
+              quantityInput.value = 1;
+              updateTotals();
+          }
+      });
+  });
+});

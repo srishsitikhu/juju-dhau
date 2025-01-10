@@ -21,7 +21,7 @@ if (!$userid) {
 // Fetch the order details with option_name from product_options
 $order_query = "
     SELECT o.order_id, o.total_amount, o.address, o.order_date, 
-           od.product_id, od.option_id, od.price, p.title, p.image_path, po.option_name
+           od.product_id, od.option_id, od.price, p.title, p.image_path, po.option_name,od.quantity
     FROM orders o
     JOIN order_details od ON o.order_id = od.order_id
     JOIN products p ON od.product_id = p.product_id
@@ -35,7 +35,7 @@ $order_result = $stmt->get_result();
 
 // Check if any rows were returned
 if ($order_result->num_rows === 0) {
-    echo "<script>alert('No details found for this order.'); window.location.href='shop.php';</script>";
+    echo "<script>alert('No details found for this order.'); window.location.href='shop_list.php';</script>";
     exit();
 }
 
@@ -56,9 +56,10 @@ echo "<section class='order-success-section padding-top-section'>
                     <tr>
                         <th>Image</th>
                         <th>Product</th>
-                        <th>Option</th>
                         <th>Price</th>
-                        <th>Subtotal</th>
+                        <th>Option</th>
+                        <th>Quantity</th>
+                        <th>Total price</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -68,16 +69,16 @@ do {
     $product_name = htmlspecialchars($order_details['title']);
     $option_name = htmlspecialchars($order_details['option_name']); // Get option name from product_options
     $price = $order_details['price'];
-    $subtotal = $price * $option_name; // Assuming option_id represents a quantity or multiplier
-    $total += $subtotal;
+    $total += $price;
     $image_path = htmlspecialchars($order_details['image_path']);
+    $quantity = $order_details['quantity'];
 
     echo "<tr>
             <td><img src='./admin/product_images/$image_path' alt='$product_name' class='img-fluid' style='max-width: 100px;'></td>
             <td>$product_name</td>
             <td>$option_name Ltr</td>
+            <td>$quantity</td>
             <td>Rs. " . number_format($price, 2) . "</td>
-            <td>Rs. " . number_format($subtotal, 2) . "</td>
           </tr>";
 } while ($order_details = $order_result->fetch_assoc());
 

@@ -6,16 +6,7 @@ include("header.php");
 if (!isset($_SESSION["userid"])) {
     echo "<script>
             alert('Please log in to proceed to checkout');
-            document.addEventListener('DOMContentLoaded', function () {
-                const form_box = document.querySelector('.form-box');
-                const overlay = document.querySelector('.overlay');
-
-                if (form_box && overlay) {
-                    form_box.classList.add('active');
-                    overlay.classList.add('active');
-                    document.querySelector('body').classList.add('overflow-hidden');
-                }
-            });
+            window.location.href = 'login.php';
           </script>";
     exit();
 }
@@ -23,60 +14,63 @@ if (!isset($_SESSION["userid"])) {
 $userid = $_SESSION["userid"];
 $total = 0;
 
-// Fetch cart items for the user, including option_name from product_options table
-$cart_query = "SELECT cd.product_id, cd.option_id, p.image_path, p.base_price, p.title, po.option_name 
+// Fetch cart items for the user
+$cart_query = "SELECT cd.product_id, cd.option_id, cd.price, cd.quantity, p.base_price,
+                      p.image_path, p.title, po.option_name 
                FROM cart_details cd 
                JOIN products p ON cd.product_id = p.product_id 
                JOIN product_options po ON cd.option_id = po.option_id
                WHERE cd.userid=?";
 $stmt = $conn->prepare($cart_query);
 $stmt->bind_param("i", $userid);
-$stmt->execute();
+if (!$stmt->execute()) {
+    die("Error fetching cart items: " . $conn->error);
+}
 $cart_items = $stmt->get_result();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     $address = htmlspecialchars($_POST['address']);
-    $payment_method = "Cash on Delivery"; // Hardcoded payment method as "Cash on Delivery"
-    
-    // Initialize total amount
-    $total = 0;
+    $payment_method = "Cash on Delivery";
 
-    // Loop through cart items and calculate total
-    while ($cart_item = $cart_items->fetch_assoc()) {
-        // Calculate subtotal using base_price and option_name (which represents quantity)
-        $subtotal = $cart_item['base_price'] * $cart_item['option_name'];
-        $total += $subtotal;
-    }
-
-    // Re-fetch the cart items to avoid using the results that were already consumed
+    // Calculate total
     $stmt->execute();
     $cart_items = $stmt->get_result();
-
-    // Proceed with placing the order if there are items in the cart
     if ($cart_items->num_rows > 0) {
-        $order_query = "INSERT INTO orders (userid, total_amount, address) VALUES (?, ?, ?)";
-        $order_stmt = $conn->prepare($order_query);
-        $order_stmt->bind_param("ids", $userid, $total, $address);
+        while ($cart_item = $cart_items->fetch_assoc()) {
+            $quantity = $cart_item['quantity'];
+            $option = $cart_item['option_name'];
+            $total += $cart_item['price'] * $quantity;
+        }
 
+        // Insert order
+        $order_query = "INSERT INTO orders (userid, total_amount, address,quantity) VALUES (?, ?, ?, ?)";
+        $order_stmt = $conn->prepare($order_query);
+        $order_stmt->bind_param("ids", $userid, $total, $address,$quantity);
         if ($order_stmt->execute()) {
             $order_id = $conn->insert_id;
 
-            // Insert order details for each cart item
+            // Insert order details
+            $stmt->execute();
+            $cart_items = $stmt->get_result();
             while ($cart_item = $cart_items->fetch_assoc()) {
                 $product_id = $cart_item['product_id'];
                 $option_id = $cart_item['option_id'];
-                $price = $cart_item['base_price'];
+                $price = $cart_item['price'];
                 
-                $order_detail_query = "INSERT INTO order_details (order_detail_id, order_id, product_id, option_id, price) VALUES (?, ?, ?, ?, ?)";
+
+                $order_detail_query = "INSERT INTO order_details (order_id, product_id, option_id, price, quantity) 
+                                       VALUES (?, ?, ?, ?, ?)";
                 $detail_stmt = $conn->prepare($order_detail_query);
-                $detail_stmt->bind_param("iiiid", $order_detail_id, $order_id, $product_id, $option_id, $price);
+                $detail_stmt->bind_param("iiiid", $order_id, $product_id, $option_id, $price, $quantity);
                 $detail_stmt->execute();
             }
 
-            // Clear cart after placing order
-            $conn->query("DELETE FROM cart_details WHERE userid=$userid");
+            // Clear cart
+            $clear_cart_query = "DELETE FROM cart_details WHERE userid=?";
+            $clear_cart_stmt = $conn->prepare($clear_cart_query);
+            $clear_cart_stmt->bind_param("i", $userid);
+            $clear_cart_stmt->execute();
 
-            // Redirect to success page
             echo "<script>alert('Order placed successfully'); window.location.href='order-success.php?order_id=$order_id';</script>";
             exit();
         } else {
@@ -85,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     }
 }
 
-// Display the checkout page if there are items in the cart
+// Render Checkout Page
 if ($cart_items->num_rows > 0) {
     echo "<section class='checkout-section padding-top-section'>
             <div class='container'>
@@ -106,21 +100,23 @@ if ($cart_items->num_rows > 0) {
                                     <tr>
                                         <th>Product</th>
                                         <th>Option</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
                                         <th>Subtotal</th>
                                     </tr>
                                 </thead>
                                 <tbody>";
 
-    // Reset total to recalculate after fetching cart items
     $total = 0;
     while ($row = $cart_items->fetch_assoc()) {
-        // Calculate subtotal using base_price and option_name (which represents quantity)
-        $subtotal = $row['base_price'] * $row['option_name'];
-        $total += $subtotal;
+        $total += $row['price'];
         echo "<tr>
                 <td>" . htmlspecialchars($row['title']) . "</td>
                 <td>" . htmlspecialchars($row['option_name']) . " Ltr</td>
-                <td>Rs. " . number_format($subtotal, 2) . "</td>
+                <td>Rs. " . htmlspecialchars($row['base_price'] * $option) . "</td>
+                <td>" . htmlspecialchars($row['quantity']) . "</td>
+                <td>Rs. " . htmlspecialchars($row['price']). "</td>
+                
               </tr>";
     }
 
@@ -128,6 +124,7 @@ if ($cart_items->num_rows > 0) {
                                 <tfoot>
                                     <tr>
                                         <th>Total</th>
+                                        <th></th>
                                         <th></th>
                                         <th>Rs. " . number_format($total, 2) . "</th>
                                     </tr>

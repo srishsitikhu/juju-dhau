@@ -21,7 +21,7 @@ if (!isset($_SESSION["userid"])) {
     $userid = $_SESSION["userid"];
 
     // Fetch cart details with option names
-    $cart_query = "SELECT cd.product_id, cd.option_id, p.image_path, p.base_price, p.title, po.option_name 
+    $cart_query = "SELECT cd.product_id, cd.option_id, cd.quantity, cd.price, p.image_path, p.title, po.option_name 
                    FROM cart_details cd 
                    JOIN products p ON cd.product_id = p.product_id 
                    JOIN product_options po ON cd.option_id = po.option_id 
@@ -60,6 +60,50 @@ if (isset($_GET['remove_product']) && isset($_GET['option_id'])) {
     }
 }
 
+if (isset($_POST['update_cart'])) {
+    $quantities = $_POST['qty'];
+    $update_success = false;
+
+    foreach ($quantities as $product_id => $quantity) {
+        $update_cart_query = "SELECT price FROM cart_details WHERE product_id = ? AND userid = ?";
+        $stmt = $conn->prepare($update_cart_query);
+        if (!$stmt) {
+            echo "<script>alert('Failed to prepare select query for product ID $product_id.');</script>";
+            continue;
+        }
+        $stmt->bind_param("ii", $product_id, $userid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $product_data = $result->fetch_assoc();
+
+        if ($product_data) {
+            $price = $product_data['price'];
+            $total_price = $price * $quantity;
+
+            // Update the cart with the new quantity and recalculated price
+            $update_price_query = "UPDATE cart_details SET quantity = ?, price = ? WHERE product_id = ? AND userid = ?";
+            $stmt = $conn->prepare($update_price_query);
+            if (!$stmt) {
+                echo "<script>alert('Failed to prepare update query for product ID $product_id.');</script>";
+                continue;
+            }
+            $stmt->bind_param("iiii", $quantity, $total_price, $product_id, $userid);
+            if ($stmt->execute()) {
+                $update_success = true;
+            } else {
+                echo "<script>alert('Failed to update quantity and price for product ID $product_id.');</script>";
+            }
+        }
+    }
+
+    if ($update_success) {
+        echo "<script>
+                alert('Cart updated successfully!');
+                window.location.href = window.location.href; // Refresh the page
+              </script>";
+    }
+}
+
 if (isset($run_cart) && $run_cart->num_rows > 0) {
     echo "<section class='cart-section padding-top-section'>
             <div class='container'>
@@ -72,7 +116,7 @@ if (isset($run_cart) && $run_cart->num_rows > 0) {
                                 <th class='product-name'>Product Name</th>
                                 <th class='product-price'>Price</th>
                                 <th class='product-liter'>Litre</th>
-                                <th class='product-quantity'>Litre</th>
+                                <th class='product-quantity'>Quantity</th>
                                 <th class='product-subtotal'>Total</th>
                             </tr>
                         </thead>
@@ -82,10 +126,12 @@ if (isset($run_cart) && $run_cart->num_rows > 0) {
         $pro_id = $row_cart['product_id'];
         $option_name = htmlspecialchars($row_cart['option_name'], ENT_QUOTES, 'UTF-8'); // Get option_name
         $image = htmlspecialchars($row_cart['image_path'], ENT_QUOTES, 'UTF-8');
-        $price = $row_cart['base_price'];
+        $price = $row_cart['price'];
+        $quantity = $row_cart['quantity'];
         $product_name = htmlspecialchars($row_cart['title'], ENT_QUOTES, 'UTF-8');
+        $single_total = $price * $quantity;
 
-        echo "<tr>
+        echo "<tr data-product-id='$pro_id' data-option-id='" . $row_cart['option_id'] . "' data-price='$price'>
                 <td class='product-remove'>
                     <a href='" . $_SERVER['PHP_SELF'] . "?remove_product=$pro_id&option_id=" . $row_cart['option_id'] . "&confirm_delete' 
                        onclick='return confirm(\"Are you sure you want to delete this product option?\")'>Cancel</a>
@@ -104,18 +150,24 @@ if (isset($run_cart) && $run_cart->num_rows > 0) {
                 </td>
                 <td class='product-quantity'>
                    <div class='quantity'>
-                        <span class='plus-btn btn-quantity'>+</span>
-                        <input type='number' class='quantity-input' name='product-quantity' value='$option_name' min='1' max='10' step='1' readonly>
-                        <span class='minus-btn btn-quantity'>-</span>
-                    </div>
+                       <span class='minus-btn btn-quantity'>-</span>
+                       <input type='number' class='quantity-input' name='qty[$pro_id]' value='$quantity' min='1' max='10' step='1'>
+                       <span class='plus-btn btn-quantity'>+</span>
+                   </div>
                 </td>
                 <td class='product-subtotal'>
-                    <span class='price-symbol'>Rs.</span> " . ($price * (float) $option_name) . "
+                    <input type='hidden' name='qty-price' value='$single_total'>
+                    <span class='price-symbol'>Rs.</span> <span class='subtotal-value'>$single_total</span>
                 </td>
             </tr>";
-        $total += ($price * (float) $option_name);
+        $total += $single_total;
     }
-
+    echo "
+    <tr>
+        <td class='text-end pt-5' colspan='6'>
+        <input type='submit' name='update_cart' class='btn read-more checkout-btn' value='Update Cart'>
+        </td> 
+    </tr> ";
     echo "</tbody></table>
           <div class='cart-collaterals margin-bottom-cart'>
             <div class='row justify-content-end'>
@@ -125,11 +177,11 @@ if (isset($run_cart) && $run_cart->num_rows > 0) {
                         <tbody>
                             <tr class='cart-subtotal'>
                                 <th>Subtotal</th>
-                                <td><span class='price-symbol'>Rs.</span> $total</td>
+                                <td><span class='price-symbol'>Rs.</span> <span id='cart-subtotal'>$total</span></td>
                             </tr>
                             <tr class='order-total'>
                                 <th>Total</th>
-                                <td><strong><span class='price-symbol'>Rs.</span> $total</strong></td>
+                                <td><strong><span class='price-symbol'>Rs.</span> <span id='cart-total'>$total</span></strong></td>
                             </tr>
                         </tbody>
                     </table>
@@ -154,3 +206,4 @@ if (isset($run_cart) && $run_cart->num_rows > 0) {
 
 include("footer.php");
 ?>
+

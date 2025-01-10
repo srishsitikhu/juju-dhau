@@ -1,46 +1,44 @@
 <?php
-// Include necessary files
+session_start();
 include('database/connect.php');
 
 // Handle form submission for adding to cart
 if (isset($_POST["cart-product"])) {
-   
-    // Check if the user is logged in
     if (!isset($_SESSION["userid"])) {
         echo "<script>
                 alert('Please log in to add items to the cart');
-                document.addEventListener('DOMContentLoaded', function () {
-                    const form_box = document.querySelector('.form-box');
-                    const overlay = document.querySelector('.overlay');
-                    if (form_box && overlay) {
-                        form_box.classList.add('active'); // Show the login form
-                        overlay.classList.add('active'); // Show the overlay
-                        document.querySelector('body').classList.add('overflow-hidden'); // Prevent scrolling
-                    }
-                });
+                window.location.href = 'login.php';
             </script>";
     } else {
         // Sanitize and validate inputs
         $get_product_id = intval($_POST['product_id']);
         $userid = mysqli_real_escape_string($conn, $_SESSION["userid"]);
-        $option_id = isset($_POST['option_id']) ? intval($_POST['option_id']) : 0; // Default to 0 if not provided
+        $option_id = isset($_POST['option_id']) ? intval($_POST['option_id']) : 0;
 
-        // Validate the option_id exists in the product_options table
-        $validate_option_id = "SELECT * FROM `product_options` WHERE `option_id` = $option_id";
-        $validate_result = mysqli_query($conn, $validate_option_id);
+        // Fetch base price and option multiplier
+        $query = "SELECT p.base_price, po.option_name 
+                  FROM products p 
+                  JOIN product_options po ON po.option_id = $option_id 
+                  WHERE p.product_id = $get_product_id";
+        $result = mysqli_query($conn, $query);
 
-        if (mysqli_num_rows($validate_result) == 0) {
-            echo "<script>alert('Invalid option selected');</script>";
-        } else {
-            // Check if the product with the selected option is already in the cart
-            $sql = "SELECT * FROM `cart_details` WHERE userid = '$userid' AND product_id = $get_product_id AND option_id = $option_id";
-            $result = mysqli_query($conn, $sql);
+        if ($result && mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            $base_price = $row['base_price'];
+            $option_multiplier = floatval($row['option_name']); // Assuming option_name is the multiplier
 
-            if (mysqli_num_rows($result) > 0) {
+            // Calculate price
+            $price = $base_price * $option_multiplier;
+
+            // Check if the product is already in the cart
+            $check_cart_query = "SELECT * FROM `cart_details` WHERE userid = '$userid' AND product_id = $get_product_id AND option_id = $option_id";
+            $check_result = mysqli_query($conn, $check_cart_query);
+
+            if (mysqli_num_rows($check_result) > 0) {
                 echo "<script>alert('Item already in cart');</script>";
             } else {
-                // Insert the product into the cart
-                $insert_query = "INSERT INTO `cart_details` (product_id, userid, option_id) VALUES ($get_product_id, '$userid', $option_id)";
+                // Insert into cart
+                $insert_query = "INSERT INTO `cart_details` (product_id, userid, option_id, price) VALUES ($get_product_id, '$userid', $option_id, $price)";
                 if (mysqli_query($conn, $insert_query)) {
                     echo "<script>alert('Item added to cart successfully');</script>";
                     echo "<script>window.open('index.php', '_self');</script>";
@@ -49,6 +47,8 @@ if (isset($_POST["cart-product"])) {
                     echo "<script>console.log('MySQL Error: " . mysqli_error($conn) . "');</script>";
                 }
             }
+        } else {
+            echo "<script>alert('Invalid product or option selected');</script>";
         }
     }
 }
@@ -73,8 +73,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 <body>
 
 <div class="product" id="product">
-    <?php
-    foreach ($products as $index => $product): 
+    <?php foreach ($products as $index => $product): 
         $option_ids = explode(',', $product['product_options']);
         $option_ids_placeholder = implode(',', array_map('intval', $option_ids)); // Sanitize option IDs
 
@@ -85,7 +84,6 @@ while ($row = mysqli_fetch_assoc($result)) {
     <div class="product-item" data-base-price="<?php echo htmlspecialchars($product['base_price']); ?>" data-index="<?php echo $index; ?>"> 
         <img src="admin/product_images/<?php echo htmlspecialchars($product['image_path']); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>" class="sliderImage">
         <div class="productDetail">
-
             <h1 class="productTitle"><?php echo htmlspecialchars($product['title']); ?></h1>
             <h2 class="productPrice">RS <?php echo htmlspecialchars($product['base_price']); ?></h2>
             <div class="productDisc"><?php echo htmlspecialchars($product['description']); ?></div>
@@ -116,17 +114,17 @@ while ($row = mysqli_fetch_assoc($result)) {
     function updatePrice(selectedSize) {
         const productDiv = selectedSize.closest('.product-item'); 
         const basePrice = parseFloat(productDiv.getAttribute('data-base-price')); 
-        const literValue = parseInt(selectedSize.getAttribute('data-option-name')); // Use data-option-name
+        const literValue = parseInt(selectedSize.getAttribute('data-option-name')); 
         const newPrice = basePrice * literValue; 
         const priceElement = productDiv.querySelector('.productPrice'); 
         priceElement.innerText = `RS ${newPrice.toFixed(2)}`; 
     }
 </script>
 
+</body>
+</html>
+
 <?php
 // Close the database connection
 mysqli_close($conn);
 ?>
-
-</body>
-</html>

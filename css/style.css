@@ -649,7 +649,7 @@ form a{
 }
 
 .cart-list th {
-  background-color: #007bff;
+  background-color: #000;
   color: #ffffff;
 }
 
@@ -702,6 +702,28 @@ form a{
 .update-message i {
   margin-right: 10px;
 }
+.quantity{
+  display: flex;
+  align-items: center;
+}
+.quantity input{
+  width: 50px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 0 10px;
+}
+.btn-quantity{
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
 
 /* Reset some default styling */
 body {
@@ -789,6 +811,8 @@ body {
   background-color: #8b0a1a;
   border-color: #bd2130;
 }
+
+/* cart quantity */
 
 
 
