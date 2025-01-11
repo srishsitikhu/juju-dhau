@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 24, 2024 at 03:13 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost
+-- Generation Time: Jan 11, 2025 at 05:12 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,8 +31,18 @@ CREATE TABLE `cart_details` (
   `id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
-  `option_id` int(11) NOT NULL
+  `option_id` int(11) NOT NULL,
+  `quantity` int(11) DEFAULT 1,
+  `price` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart_details`
+--
+
+INSERT INTO `cart_details` (`id`, `product_id`, `userid`, `option_id`, `quantity`, `price`) VALUES
+(90, 1, 1, 1, 1, 300),
+(91, 1, 1, 3, 1, 1200);
 
 -- --------------------------------------------------------
 
@@ -47,8 +57,29 @@ CREATE TABLE `orders` (
   `address` text NOT NULL,
   `payment_method` varchar(50) NOT NULL DEFAULT 'Cash on Delivery',
   `order_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `status` varchar(50) DEFAULT 'Pending'
+  `status` varchar(50) DEFAULT 'Pending',
+  `quantity` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `userid`, `total_amount`, `address`, `payment_method`, `order_date`, `status`, `quantity`) VALUES
+(1, 1, 3660.00, 'bhaktapur', 'Cash on Delivery', '2025-01-10 08:03:08', 'Pending', NULL),
+(2, 1, 300.00, 'bhak', 'Cash on Delivery', '2025-01-10 08:13:22', 'Pending', NULL),
+(3, 1, 300.00, 'dsd', 'Cash on Delivery', '2025-01-10 08:17:00', 'Pending', NULL),
+(4, 1, 300.00, 'hhh', 'Cash on Delivery', '2025-01-10 08:21:04', 'Pending', NULL),
+(5, 1, 300.00, 'h', 'Cash on Delivery', '2025-01-10 08:21:52', 'Pending', NULL),
+(6, 1, 300.00, 'ss', 'Cash on Delivery', '2025-01-10 08:30:10', 'Pending', NULL),
+(7, 1, 1500.00, 'hh', 'Cash on Delivery', '2025-01-10 08:33:32', 'Pending', NULL),
+(8, 1, 1500.00, 'ss', 'Cash on Delivery', '2025-01-10 08:33:49', 'Pending', NULL),
+(9, 1, 1500.00, 'ss', 'Cash on Delivery', '2025-01-10 08:36:44', 'Pending', NULL),
+(10, 1, 1500.00, 's', 'Cash on Delivery', '2025-01-10 08:36:54', 'Pending', NULL),
+(11, 1, 1500.00, 's', 'Cash on Delivery', '2025-01-10 08:38:03', 'Pending', NULL),
+(12, 1, 1500.00, 'ss', 'Cash on Delivery', '2025-01-10 08:38:10', 'Pending', NULL),
+(13, 1, 1500.00, 'ss', 'Cash on Delivery', '2025-01-10 08:40:04', 'Pending', NULL),
+(14, 1, 10800.00, 'ss', 'Cash on Delivery', '2025-01-10 08:44:37', 'Pending', NULL);
 
 -- --------------------------------------------------------
 
@@ -61,8 +92,24 @@ CREATE TABLE `order_details` (
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `option_id` int(11) NOT NULL,
-  `price` decimal(10,2) NOT NULL
+  `price` decimal(10,2) NOT NULL,
+  `quantity` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_details`
+--
+
+INSERT INTO `order_details` (`order_detail_id`, `order_id`, `product_id`, `option_id`, `price`, `quantity`) VALUES
+(11, 1, 3, 1, 60.00, 1),
+(12, 1, 1, 2, 3600.00, 4),
+(13, 2, 1, 1, 300.00, 1),
+(14, 3, 1, 1, 300.00, 1),
+(15, 4, 1, 1, 300.00, 1),
+(16, 5, 1, 1, 300.00, 1),
+(17, 13, 1, 1, 300.00, 1),
+(18, 13, 1, 3, 1200.00, 1),
+(19, 14, 1, 3, 3600.00, 3);
 
 -- --------------------------------------------------------
 
@@ -189,19 +236,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `cart_details`
 --
 ALTER TABLE `cart_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `order_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `order_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `products`

@@ -139,8 +139,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const addressInput = form.querySelector('input[name="userAddress"]');
         const addressError = document.getElementById("addressError");
         const wordCount = addressInput.value.trim().split(/\s+/).length;
-        if (wordCount <= 3) {
-            addressError.textContent = "Address must contain more than 3 words.";
+        if (wordCount <= 2) {
+            addressError.textContent = "Address must contain more than 2 words.";
             return false;
         } else {
             addressError.textContent = "";
