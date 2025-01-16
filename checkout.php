@@ -1,18 +1,21 @@
 <?php
-session_start();
+@session_start();
 include("database/connect.php");
 include("header.php");
+
+
 
 if (!isset($_SESSION["userid"])) {
     echo "<script>
             alert('Please log in to proceed to checkout');
-            window.location.href = 'login.php';
+            window.location.href = 'form-box.php';
           </script>";
     exit();
 }
 
 $userid = $_SESSION["userid"];
 $total = 0;
+$total_quantity = 0;
 
 // Fetch cart items for the user
 $cart_query = "SELECT cd.product_id, cd.option_id, cd.price, cd.quantity, p.base_price,
@@ -32,37 +35,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     $address = htmlspecialchars($_POST['address']);
     $payment_method = "Cash on Delivery";
 
-    // Calculate total
-    $stmt->execute();
-    $cart_items = $stmt->get_result();
-    if ($cart_items->num_rows > 0) {
-        while ($cart_item = $cart_items->fetch_assoc()) {
-            $quantity = $cart_item['quantity'];
-            $option = $cart_item['option_name'];
-            $total += $cart_item['price'] * $quantity;
+    // Calculate total and total quantity
+    $cart_items->data_seek(0); // Reset pointer to the beginning of the result set
+    while ($cart_item = $cart_items->fetch_assoc()) {
+        $subtotal = $cart_item['price'];
+        if (is_null($subtotal)) {
+            die("Error: Price is null for product_id " . $cart_item['product_id'] . ", option_id " . $cart_item['option_id']);
         }
+        $total += $subtotal;
+        $total_quantity += $cart_item['quantity'];
+    }
 
+    if ($total > 0) {
         // Insert order
-        $order_query = "INSERT INTO orders (userid, total_amount, address,quantity) VALUES (?, ?, ?, ?)";
+        $order_query = "INSERT INTO orders (userid, total_amount, address, quantity) VALUES (?, ?, ?, ?)";
         $order_stmt = $conn->prepare($order_query);
-        $order_stmt->bind_param("ids", $userid, $total, $address,$quantity);
+        $order_stmt->bind_param("iisd", $userid, $total, $address, $total_quantity);
         if ($order_stmt->execute()) {
             $order_id = $conn->insert_id;
 
             // Insert order details
-            $stmt->execute();
-            $cart_items = $stmt->get_result();
+            $cart_items->data_seek(0); // Reset pointer for order details
             while ($cart_item = $cart_items->fetch_assoc()) {
                 $product_id = $cart_item['product_id'];
                 $option_id = $cart_item['option_id'];
                 $price = $cart_item['price'];
-                
+                $quantity = $cart_item['quantity'];
 
                 $order_detail_query = "INSERT INTO order_details (order_id, product_id, option_id, price, quantity) 
                                        VALUES (?, ?, ?, ?, ?)";
                 $detail_stmt = $conn->prepare($order_detail_query);
+                if (!$detail_stmt) {
+                    die("Error preparing detail query: " . $conn->error);
+                }
                 $detail_stmt->bind_param("iiiid", $order_id, $product_id, $option_id, $price, $quantity);
-                $detail_stmt->execute();
+                if (!$detail_stmt->execute()) {
+                    die("Error inserting order detail: " . $conn->error);
+                }
             }
 
             // Clear cart
@@ -76,6 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
         } else {
             echo "<script>alert('Failed to place the order. Please try again.');</script>";
         }
+    } else {
+        echo "<script>alert('Your cart is empty. Please add items to your cart before placing an order.');</script>";
     }
 }
 
@@ -100,7 +111,7 @@ if ($cart_items->num_rows > 0) {
                                     <tr>
                                         <th>Product</th>
                                         <th>Option</th>
-                                        <th>Price</th>
+                                        <th>Unit Price</th>
                                         <th>Quantity</th>
                                         <th>Subtotal</th>
                                     </tr>
@@ -109,23 +120,20 @@ if ($cart_items->num_rows > 0) {
 
     $total = 0;
     while ($row = $cart_items->fetch_assoc()) {
-        $total += $row['price'];
+        $subtotal = $row['price'];
+        $total += $subtotal;
         echo "<tr>
                 <td>" . htmlspecialchars($row['title']) . "</td>
                 <td>" . htmlspecialchars($row['option_name']) . " Ltr</td>
-                <td>Rs. " . htmlspecialchars($row['base_price'] * $option) . "</td>
+                <td>Rs. " . number_format($row['base_price'] * $row['option_name'], 2) . "</td>
                 <td>" . htmlspecialchars($row['quantity']) . "</td>
-                <td>Rs. " . htmlspecialchars($row['price']). "</td>
-                
+                <td>Rs. " . number_format($subtotal, 2) . "</td>
               </tr>";
     }
-
     echo "</tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>Total</th>
-                                        <th></th>
-                                        <th></th>
+                                        <th colspan='4'>Total</th>
                                         <th>Rs. " . number_format($total, 2) . "</th>
                                     </tr>
                                 </tfoot>
@@ -133,9 +141,10 @@ if ($cart_items->num_rows > 0) {
                         </div>
                     </div>
                     <div class='row'>
-                        <div class='col-md-12 text-right'>
-                            <button type='submit' name='place_order' class='btn btn-primary'>Place Order (Cash on Delivery)</button>
+                        <div class='col-md-12 text-right section-gaps'>
+                            <button type='submit' name='place_order' class=' btn btn-success place-btn '>Place Order (Cash on Delivery)</button>
                         </div>
+                        
                     </div>
                 </form>
             </div>

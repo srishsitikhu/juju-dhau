@@ -44,12 +44,16 @@ if (isset($_POST['sign_in'])) {
             header("Location: index.php");
             exit();
         } else {
-            echo "<script>alert('Invalid email or password.');</script>";
-            echo "<script>window.location.href = 'index.php';</script>"; // Redirect to index.php
+            echo "<script>alert('Invalid email or password.');
+            window.location.href = 'form-box.php';
+            </script>";
+            
         }
     } else {
-        echo "<script>alert('Invalid email or password.');</script>";
-        echo "<script>window.location.href = 'index.php';</script>"; // Redirect to index.php
+        echo "<script>alert('Invalid email or password.');
+        window.location.href = 'form-box.php';
+        </script>";
+        
     }
 }
 ?>

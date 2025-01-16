@@ -8,9 +8,13 @@ body {
   margin: 0;
   padding: 0;
 }
+
 a{
   color: inherit;
   text-decoration: none;
+}
+.section-gaps{
+  padding: 50px 0;
 }
 nav {
   /* background-image: linear-gradient(to right, #5C2400 , #FFEEBD); */
@@ -437,7 +441,7 @@ footer {
 
 /* user login */
 
-.form-box{
+/* .form-box{
   width: 100%;
   max-width: 40%;
   position: fixed;
@@ -457,7 +461,13 @@ footer {
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, -50%)  scale(1);
-}
+} */
+
+ .form-box{
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+ }
 .form-box .close{
   --size: 35px;
   height: var(--size);
@@ -530,6 +540,8 @@ form a{
 }
 .btn-field{
   width: 100%;
+  max-width: 400px;
+  margin: 0 auto 30px;
   display: flex;
   justify-content: space-between;
 }
@@ -624,9 +636,7 @@ form a{
   overflow: hidden;            
   text-overflow: ellipsis;        
 }
-.btn-box{
 
-}
 
 
 /* Cart Styles */
@@ -672,19 +682,12 @@ form a{
 .price-symbol {
   font-weight: bold;
 }
-
-.btn.read-more.checkout-btn {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
+.btn-success{
+  width: 30%;
 }
 
-.btn.read-more.checkout-btn:hover {
-  background-color: #218838;
-}
+
+
 
 .notice {
   background-color: #e2ffe2;

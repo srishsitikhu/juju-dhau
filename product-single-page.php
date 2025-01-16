@@ -9,17 +9,8 @@ if (isset($_POST["cart-product"])) {
         echo "<script>alert('Please log in to add items to the cart');</script>";
         echo "
             <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const form_box = document.querySelector('.form-box');
-                    const overlay = document.querySelector('.overlay');
-                    if (form_box && overlay) {
-                        form_box.classList.add('active');
-                        overlay.classList.add('active'); 
-                        document.querySelector('body').classList.add('overflow-hidden');
-                    }
-                });
-            </script>
-        ";
+                window.location.href = 'form-box.php';
+        </script>";
     } else {
 
         // Get product ID and user ID

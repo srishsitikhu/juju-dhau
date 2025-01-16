@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 include("database/connect.php");
 include("header.php");
 
@@ -8,15 +8,7 @@ if (!isset($_SESSION["userid"])) {
     echo "<script>alert('Please log in to view your orders');</script>";
     echo "
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const form_box = document.querySelector('.form-box');
-                const overlay = document.querySelector('.overlay');
-                if (form_box && overlay) {
-                    form_box.classList.add('active');
-                    overlay.classList.add('active'); 
-                    document.querySelector('body').classList.add('overflow-hidden');
-                }
-            });
+           window.location.href = 'form-box.php';
         </script>";
 } else {
     $userid = $_SESSION["userid"];
@@ -81,9 +73,10 @@ if (isset($_GET['delete_order_id'])) {
 
 // Fetch all orders for the logged-in user
 $order_query = "
-    SELECT o.order_id, o.total_amount, o.order_date, 
-           (SELECT COUNT(*) FROM order_details od WHERE od.order_id = o.order_id) AS item_count
+    SELECT o.order_id, o.total_amount, o.order_date, o.quantity, p.title
     FROM orders o
+    JOIN order_details od ON o.order_id = od.order_id
+    JOIN products p ON od.product_id = p.product_id
     WHERE o.userid = ?
     ORDER BY o.order_date DESC";
 
@@ -92,7 +85,7 @@ $stmt->bind_param("i", $userid);
 $stmt->execute();
 $order_result = $stmt->get_result();
 
-echo "<section class='order-list-section padding-top-section'>
+echo "<section class='order-list-section padding-top-section section-gaps'>
         <div class='container'>
             <h2 class='heading underline'>Your Orders</h2>";
 
@@ -101,6 +94,7 @@ if ($order_result->num_rows > 0) {
             <thead>
                 <tr>
                     <th>Order ID</th>
+                    <th>Product</th>
                     <th>Date</th>
                     <th>Payment Method</th>
                     <th>Total Items</th>
@@ -109,19 +103,23 @@ if ($order_result->num_rows > 0) {
                 </tr>
             </thead>
             <tbody>";
-
+            $id = 1;
     while ($row = $order_result->fetch_assoc()) {
+        
         $order_id = $row['order_id'];
+        $order_name = $row['title'];
         $order_date = htmlspecialchars($row['order_date']);
         $payment_method = "Cash on Delivery";
         $item_count = $row['item_count'];
         $total_amount = number_format($row['total_amount'], 2);
+        $quantity= $row['quantity'];
 
         echo "<tr>
-                <td>$order_id</td>
+            <td>" . ($id++) . "</td>
+            <td>$order_name</td>
                 <td>$order_date</td>
                 <td>$payment_method</td>
-                <td>$item_count</td>
+                <td>$quantity</td>
                 <td>Rs. $total_amount</td>
                 <td>
                     <a href='order-success.php?order_id=$order_id' class='btn btn-info'>View Details</a>

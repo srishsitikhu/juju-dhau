@@ -26,15 +26,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const togglePassword = document.getElementById("togglePassword");
     const passwordField = document.getElementById("userPassword");
 
-    togglePassword.onclick = function () {
-        // Toggle the type attribute between "password" and "text"
-        const type = passwordField.type === "password" ? "text" : "password";
-        passwordField.type = type;
+    if (togglePassword && passwordField) {
+        togglePassword.onclick = function () {
+            // Toggle the type attribute between "password" and "text"
+            const type = passwordField.type === "password" ? "text" : "password";
+            passwordField.type = type;
 
-        // Toggle the eye icon class
-        this.classList.toggle("fa-eye");
-        this.classList.toggle("fa-eye-slash");
-    };
+            // Toggle the eye icon class
+            this.classList.toggle("fa-eye");
+            this.classList.toggle("fa-eye-slash");
+        };
+    }
 
     // Toggle form
     let signUpBtn = document.getElementById("signUpBtn");
@@ -45,34 +47,36 @@ document.addEventListener("DOMContentLoaded", function () {
     let title = document.getElementById("title");
     let submit_name = document.getElementById("form-submit");
 
-    signInBtn.onclick = function () {
-        // Slide up extra fields for Sign In
-        nameField.style.maxHeight = "0";
-        contactField.style.maxHeight = "0";
-        addressField.style.maxHeight = "0";
+    if (signInBtn && signUpBtn) {
+        signInBtn.onclick = function () {
+            // Slide up extra fields for Sign In
+            nameField.style.maxHeight = "0";
+            contactField.style.maxHeight = "0";
+            addressField.style.maxHeight = "0";
 
-        // Change title and visibility
-        title.innerHTML = "Log In";
-        signUpBtn.classList.add("disable");
-        signInBtn.classList.remove("disable");
+            // Change title and visibility
+            title.innerHTML = "Log In";
+            signUpBtn.classList.add("disable");
+            signInBtn.classList.remove("disable");
 
-        // Change the name attribute of the submit button
-        submit_name.setAttribute('name', 'sign_in');
-    }
+            // Change the name attribute of the submit button
+            submit_name.setAttribute('name', 'sign_in');
+        }
 
-    signUpBtn.onclick = function () {
-        // Slide down extra fields for Sign Up
-        nameField.style.maxHeight = "60px"; // Adjust based on field height
-        contactField.style.maxHeight = "60px"; // Adjust based on field height
-        addressField.style.maxHeight = "60px"; // Adjust based on field height
+        signUpBtn.onclick = function () {
+            // Slide down extra fields for Sign Up
+            nameField.style.maxHeight = "60px"; // Adjust based on field height
+            contactField.style.maxHeight = "60px"; // Adjust based on field height
+            addressField.style.maxHeight = "60px"; // Adjust based on field height
 
-        // Change title and visibility
-        title.innerHTML = "Sign Up";
-        signInBtn.classList.add("disable");
-        signUpBtn.classList.remove("disable");
+            // Change title and visibility
+            title.innerHTML = "Sign Up";
+            signInBtn.classList.add("disable");
+            signUpBtn.classList.remove("disable");
 
-        // Change the name attribute of the submit button
-        submit_name.setAttribute('name', 'sign_up');
+            // Change the name attribute of the submit button
+            submit_name.setAttribute('name', 'sign_up');
+        }
     }
 
     const formSubmit = document.getElementById("form-submit");

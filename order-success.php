@@ -1,5 +1,5 @@
 <?php
-session_start(); // Start the session
+@session_start(); // Start the session
 
 include("database/connect.php");
 include("header.php");
@@ -14,7 +14,7 @@ $order_id = intval($_GET['order_id']);
 $userid = $_SESSION["userid"] ?? null;
 
 if (!$userid) {
-    echo "<script>alert('Please log in to view your order details.'); window.location.href='login.php';</script>";
+    echo "<script>alert('Please log in to view your order details.'); window.location.href='form-box.php';</script>";
     exit();
 }
 
@@ -49,14 +49,13 @@ echo "<section class='order-success-section padding-top-section'>
         <div class='container'>
             <h2 class='heading underline'>Order Successful</h2>
             <p class='lead'>Thank you for your purchase! Your order has been placed successfully.</p>
-            <p class='lead'>Order ID: <strong>$order_id</strong></p>
             <h3 class='subheading'>Order Summary</h3>
             <table class='table'>
                 <thead>
                     <tr>
                         <th>Image</th>
                         <th>Product</th>
-                        <th>Price</th>
+                        <th>Unit-Price</th>
                         <th>Option</th>
                         <th>Quantity</th>
                         <th>Total price</th>
@@ -76,6 +75,7 @@ do {
     echo "<tr>
             <td><img src='./admin/product_images/$image_path' alt='$product_name' class='img-fluid' style='max-width: 100px;'></td>
             <td>$product_name</td>
+            <td>Rs. " . number_format($price/$quantity, 2) . "</td>
             <td>$option_name Ltr</td>
             <td>$quantity</td>
             <td>Rs. " . number_format($price, 2) . "</td>
@@ -93,8 +93,8 @@ echo "</tbody>
                 <p><strong>Payment Method:</strong> $payment_method</p>
                 <p><strong>Order Date:</strong> $order_date</p>
             </div>
-            <div class='text-center'>
-                <a href='shop_list.php' class='btn btn-primary'>Continue Shopping</a>
+            <div class='text-center section-gaps'>
+                <a href='shop_list.php' class='btn btn-success'>Continue Shopping</a>
             </div>
         </div>
       </section>";

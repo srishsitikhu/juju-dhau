@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 include('database/connect.php');
 
 // Handle form submission for adding to cart
@@ -7,7 +7,7 @@ if (isset($_POST["cart-product"])) {
     if (!isset($_SESSION["userid"])) {
         echo "<script>
                 alert('Please log in to add items to the cart');
-                window.location.href = 'login.php';
+                window.location.href = 'form-box.php';
             </script>";
     } else {
         // Sanitize and validate inputs
