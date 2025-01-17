@@ -1,6 +1,10 @@
 <?php
 @session_start();
-include("database/connect.php");
+include 'database/connect.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 
 if (isset($_POST['sign_up'])) {
     // Collecting user input
@@ -20,7 +24,7 @@ if (isset($_POST['sign_up'])) {
         echo "<script>window.location.href = 'index.php';</script>"; // Redirect to index.php
     } else {
         // Show error message
-        echo "<script>alert('Error: " . $conn->error . "');</script>";
+        echo "<script>alert('Error: {$conn->error}');</script>";
     }
 }
 
@@ -56,4 +60,3 @@ if (isset($_POST['sign_in'])) {
         
     }
 }
-?>

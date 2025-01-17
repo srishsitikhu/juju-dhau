@@ -8,11 +8,20 @@
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close,grid_view,person_outline,receipt_long,settings,add" /> -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-
-
     <link rel="stylesheet" href="style.css">
 </head>
 
+<?php
+// Start session at the top before any output
+session_start();
+
+// Check if the admin session exists
+if (!isset($_SESSION['admin'])) {
+    // Redirect to login page if session is invalid
+    header('Location: login/login.php');
+    exit;
+}
+?>
 <body>
     <div class="container">
         <div class="left">
@@ -21,6 +30,7 @@
             <div class="top">
                 <div class="logo">Juju Dhau</div>
                 <div class="close">
+                    <!-- Ensure the icon name is correct -->
                     <span class="material-symbols-outlined">close</span>
                 </div>
             </div>
@@ -31,13 +41,13 @@
                     </span>
                     <h3>Dashboard</h3>
                 </a>
-                <a href="#" class="active">
+                <a href="customer/customer.php" class="active">
                     <span class="material-symbols-outlined">
                         person_outline
                     </span>
                     <h3>Customer</h3>
                 </a>
-                <a href="#">
+                <a href="Product/product.php">
                     <span class="material-symbols-outlined">
                         receipt_long
                     </span>
@@ -49,13 +59,13 @@
                     </span>
                     <h3>setting</h3>
                 </a>
-                <a href="#">
+                <a href="insert_product.php">
                     <span class="material-symbols-outlined">
                         add
                     </span>
                     <h3>Add Product</h3>
                 </a>
-                <a href="#">
+                <a href="login/logout.php">
                     <span class="material-symbols-outlined">
                         logout
                     </span>
@@ -183,7 +193,7 @@
                         <p><b>Robot</b></p>
                         <p>Admin</p>
                         <small class="textmuted"></small>
-                   </div>
+                    </div>
                     <div class="profilephoto">
                         <img src="image/pphoto.jpg" alt="loading fail">
                     </div>
