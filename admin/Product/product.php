@@ -40,7 +40,7 @@ if ((!$_SESSION['admin'])) {
         <tbody>
 
             <!-- data -->
-            <?php`
+            <?php
             include '../database/connect.php';
             $sql = "SELECT `product_id`,`title`, `base_price`, `description`, `image_path`, `date_added` FROM `products`";
             $result = $conn->query($sql);
