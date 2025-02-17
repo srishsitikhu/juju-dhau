@@ -307,10 +307,8 @@ nav {
   text-decoration: none;
 }
 .product {
-  min-height: 100vh;
   background-color: whitesmoke;
   position: relative;
-  clip-path: polygon(0 0, 100% 15%, 100% 100%, 0 85%);
 }
 .productImg {
   width: 50%;
