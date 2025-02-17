@@ -4,8 +4,7 @@ include("database/connect.php");
 
 // Check if the user is logged in
 if (!isset($_SESSION['name'])) {
-    echo "<script>alert('You need to log in first!');</script>";
-    echo "<script>window.location.href = 'index.php';</script>";
+    echo "<script>window.location.href = 'index.php?notify=3';</script>";
     exit();
 }
 
@@ -19,10 +18,6 @@ if ($result->num_rows > 0) {
     $email = $row['email'];
     $contact = $row['number'];
     $address = $row['address'];
-} else {
-    echo "<script>alert('Error fetching profile details.');</script>";
-    echo "<script>window.location.href = 'user_profile.php';</script>";
-    exit();
 }
 
 // Update profile
@@ -34,10 +29,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "UPDATE user SET email='$newEmail', number='$newContact', address='$newAddress' WHERE name='$name'";
 
     if ($conn->query($sql) === TRUE) {
-        echo "<script>alert('Profile updated successfully!');</script>";
-        echo "<script>window.location.href = 'user_profile.php';</script>";
-    } else {
-        echo "<script>alert('Error updating profile: " . $conn->error . "');</script>";
+        echo "<script>window.location.href = 'user_profile.php?notify=11';</script>";
+        exit();
     }
 }
 ?>

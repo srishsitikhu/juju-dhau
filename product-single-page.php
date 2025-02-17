@@ -6,10 +6,9 @@ include('database/connect.php');
 if (isset($_POST["cart-product"])) {
     // Check if the user is logged in
     if (!isset($_SESSION["userid"])) {
-        echo "<script>alert('Please log in to add items to the cart');</script>";
         echo "
             <script>
-                window.location.href = 'form-box.php';
+                window.location.href = 'form-box.php?notify=3';
         </script>";
     } else {
 
@@ -33,13 +32,13 @@ if (isset($_POST["cart-product"])) {
 
             if (mysqli_num_rows($result) > 0) {
                 // Product with the selected option is already in the cart
-                echo "<script>alert('Item already in cart');</script>";
+                echo "<script>window.location.href = 'product-single-page.php?id=$get_product_id&notify=14';</script>";
+
             } else {
                 // Insert the product into the cart with the selected option
                 $insert_query = "INSERT INTO `cart_details` (product_id, userid, option_id) VALUES ($get_product_id, '$userid', $option_id)";
                 if (mysqli_query($conn, $insert_query)) {
-                    echo "<script>alert('Item added to cart successfully');</script>";
-                    echo "<script>window.open('product-single-page.php?id=$get_product_id', '_self');</script>";
+                    echo "<script>window.open('product-single-page.php?id=$get_product_id&notify=13', '_self');</script>";
                 } else {
                     echo "<script>alert('Error adding item to cart');</script>";
                     echo "<script>console.log('MySQL Error: " . mysqli_error($conn) . "');</script>"; // Log error for debugging
@@ -92,12 +91,13 @@ if (isset($_GET['id'])) {
                         <div class="sizes">
                             <?php foreach ($options as $optionIndex => $option): ?>
                                 <div class="size">
-                                    <input type="radio" name="liter" 
-                                           id="option_<?php echo $optionIndex; ?>_<?php echo htmlspecialchars($option['option_id']); ?>" 
-                                           value="<?php echo htmlspecialchars($option['option_id']); ?>" 
-                                           data-option-name="<?php echo htmlspecialchars($option['option_name']); ?>" 
-                                           onchange="updatePrice(this)" <?php echo $optionIndex === 0 ? 'checked' : ''; ?>>
-                                    <label for="option_<?php echo $optionIndex; ?>_<?php echo htmlspecialchars($option['option_id']); ?>">
+                                    <input type="radio" name="liter"
+                                        id="option_<?php echo $optionIndex; ?>_<?php echo htmlspecialchars($option['option_id']); ?>"
+                                        value="<?php echo htmlspecialchars($option['option_id']); ?>"
+                                        data-option-name="<?php echo htmlspecialchars($option['option_name']); ?>"
+                                        onchange="updatePrice(this)" <?php echo $optionIndex === 0 ? 'checked' : ''; ?>>
+                                    <label
+                                        for="option_<?php echo $optionIndex; ?>_<?php echo htmlspecialchars($option['option_id']); ?>">
                                         <?php echo htmlspecialchars($option['option_name']); ?> ltr
                                     </label>
                                 </div>

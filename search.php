@@ -10,7 +10,7 @@ if (isset($_GET['search_keyword'])) {
 
 ?>
 
-<section class="single-banner bg-light-white margin-top-header">
+<section class="single-banner section-gaps">
     <div class="container">
         <h1 class="heading">Search</h1>
         <div class="breadcrumb m-0">
@@ -21,7 +21,7 @@ if (isset($_GET['search_keyword'])) {
     </div>
 </section>
 <section class="pb-5 padding-top-section">
-    <div class="container">
+    <div class="containers">
         <div class="row g-5">
             <?php
             search_product();

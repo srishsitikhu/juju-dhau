@@ -4,8 +4,7 @@ include("database/connect.php");
 
 // Check if the user is logged in
 if (!isset($_SESSION['name'])) {
-    echo "<script>alert('You need to log in first!');</script>";
-    echo "<script>window.location.href = 'index.php';</script>";
+    echo "<script>window.location.href = 'index.php?notify=3';</script>";
     exit();
 }
 
@@ -21,10 +20,6 @@ if ($result->num_rows > 0) {
     $email = $row['email'];
     $contact = $row['number'];
     $address = $row['address'];
-} else {
-    echo "<script>alert('Error fetching profile details.');</script>";
-    echo "<script>window.location.href = 'index.php';</script>";
-    exit();
 }
 ?>
 <!DOCTYPE html>

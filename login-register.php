@@ -1,9 +1,6 @@
 <?php
 @session_start();
 include 'database/connect.php';
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 
 if (isset($_POST['sign_up'])) {
@@ -20,12 +17,8 @@ if (isset($_POST['sign_up'])) {
     // Attempt to execute the query
     if ($conn->query($sql) === TRUE) {
         // Registration successful
-        echo "<script>alert('Registration successful!');</script>";
-        echo "<script>window.location.href = 'index.php';</script>"; // Redirect to index.php
-    } else {
-        // Show error message
-        echo "<script>alert('Error: {$conn->error}');</script>";
-    }
+        header("Location: form-box.php?notify=1");
+    } 
 }
 
 if (isset($_POST['sign_in'])) {
@@ -39,24 +32,22 @@ if (isset($_POST['sign_in'])) {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $storedPassword = $row['password'];
-        
+
         // Verify the password
         if ($storedPassword === $password) {
             $_SESSION['name'] = $row['name'];
             $_SESSION['userid'] = $row['id']; // Set the userid in session
-            echo "<script>alert('Login successful!');</script>";
-            header("Location: index.php");
+
+            header("Location: index.php?notify=2");
             exit();
         } else {
-            echo "<script>alert('Invalid email or password.');
-            window.location.href = 'form-box.php';
-            </script>";
-            
+            header("Location: form-box.php?notify=3");
+            exit();
+
         }
     } else {
-        echo "<script>alert('Invalid email or password.');
-        window.location.href = 'form-box.php';
-        </script>";
-        
+        header("Location: form-box.php?notify=3");
+        exit();
+
     }
 }

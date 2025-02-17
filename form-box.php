@@ -1,15 +1,29 @@
 <?php include "header.php"; ?>
+<?php
+if (isset($_GET['notify'])) {
+    $message = ($_GET['notify'] == 3) ? "Please login to continue" : ($_GET['notify'] == 4 ? "Invalid email or password" : "");
+    $icon = ($_GET['notify'] == 3) ? "fas fa-sign-in-alt" : ($_GET['notify'] == 4 ? "fas fa-times-circle" : "fas fa-exclamation-circle");
+    if ($message) {
+        echo "<script>
+            $(document).ready(function () {
+                $('#notification-container .alert')
+                    .addClass('alert-danger show')
+                    .find('.notifyMsg')
+                    .text('$message');
+                $('#notification-container .alert i')
+                    .addClass('$icon')
+                    .css('color', 'red');
+            });
+        </script>";
+    }
+}
+?>
+
+
+
 <section class="form-section section-gaps">
     <div class="container">
     <div class="form-box">
-    <span class="close">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="feather feather-x">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-    </span>
     <div class="btn-field">
         <button type="button" name="sign_up" id="signUpBtn">Sign Up</button>
         <button type="button" name="sign_in" class="disable" id="signInBtn">Log In</button>

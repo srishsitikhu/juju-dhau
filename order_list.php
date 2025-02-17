@@ -5,10 +5,9 @@ include("header.php");
 
 // Check if user is logged in
 if (!isset($_SESSION["userid"])) {
-    echo "<script>alert('Please log in to view your orders');</script>";
     echo "
         <script>
-           window.location.href = 'form-box.php';
+           window.location.href = 'form-box.php?notify=3';
         </script>";
 } else {
     $userid = $_SESSION["userid"];
@@ -44,7 +43,6 @@ if (isset($_GET['delete_order_id'])) {
                         if ($conn->query($reset_query)) {
                             // Commit the transaction
                             $conn->commit();
-                            echo "<script>alert('Order deleted successfully');</script>";
                         } else {
                             throw new Exception("Failed to reset AUTO_INCREMENT.");
                         }
@@ -53,7 +51,7 @@ if (isset($_GET['delete_order_id'])) {
                     }
 
                     // Redirect back to the order list page after deletion
-                    header("Location: order_list.php");
+                    header("Location: order_list.php?notify=13");
                     exit();
                 } else {
                     throw new Exception("Failed to delete the order.");
@@ -64,11 +62,8 @@ if (isset($_GET['delete_order_id'])) {
         } catch (Exception $e) {
             // Rollback the transaction in case of an error
             $conn->rollback();
-            echo "<script>alert('Error: " . $e->getMessage() . "');</script>";
         }
-    } else {
-        echo "<script>alert('Invalid order ID.');</script>";
-    }
+    } 
 }
 
 // Fetch all orders for the logged-in user

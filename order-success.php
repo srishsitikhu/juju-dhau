@@ -4,17 +4,13 @@
 include("database/connect.php");
 include("header.php");
 
-// Check if the order ID is passed in the URL
-if (!isset($_GET['order_id']) || empty($_GET['order_id'])) {
-    echo "<script>alert('No order ID provided.'); window.location.href='shop_list.php';</script>";
-    exit();
-}
+
 
 $order_id = intval($_GET['order_id']);
 $userid = $_SESSION["userid"] ?? null;
 
 if (!$userid) {
-    echo "<script>alert('Please log in to view your order details.'); window.location.href='form-box.php';</script>";
+    echo "<script>window.location.href='form-box.php?notify=3';</script>";
     exit();
 }
 
@@ -33,11 +29,7 @@ $stmt->bind_param("ii", $order_id, $userid);
 $stmt->execute();
 $order_result = $stmt->get_result();
 
-// Check if any rows were returned
-if ($order_result->num_rows === 0) {
-    echo "<script>alert('No details found for this order.'); window.location.href='shop_list.php';</script>";
-    exit();
-}
+
 
 // Fetch the first row for delivery details
 $order_details = $order_result->fetch_assoc();

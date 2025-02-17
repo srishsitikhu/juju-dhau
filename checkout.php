@@ -7,8 +7,7 @@ include("header.php");
 
 if (!isset($_SESSION["userid"])) {
     echo "<script>
-            alert('Please log in to proceed to checkout');
-            window.location.href = 'form-box.php';
+            window.location.href = 'form-box.php?notify=3';
           </script>";
     exit();
 }
@@ -80,13 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
             $clear_cart_stmt->bind_param("i", $userid);
             $clear_cart_stmt->execute();
 
-            echo "<script>alert('Order placed successfully'); window.location.href='order-success.php?order_id=$order_id';</script>";
+            echo "<script>window.location.href='order-success.php?order_id=$order_id&notify=8';</script>";
             exit();
-        } else {
-            echo "<script>alert('Failed to place the order. Please try again.');</script>";
         }
-    } else {
-        echo "<script>alert('Your cart is empty. Please add items to your cart before placing an order.');</script>";
     }
 }
 

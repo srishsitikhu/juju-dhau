@@ -5,8 +5,7 @@ include("header.php");
 
 if (!isset($_SESSION["userid"])) {
     echo "<script>
-            alert('Please log in to add items to the cart');
-            window.location.href = 'form-box.php';
+            window.location.href = 'form-box.php?notify=3';
             </script>";
 } else {
     $userid = $_SESSION["userid"];
@@ -42,11 +41,8 @@ if (isset($_GET['remove_product']) && isset($_GET['option_id'])) {
         $stmt->bind_param("iis", $product_id_to_remove, $userid, $product_option_to_remove);
 
         if ($stmt->execute()) {
-            echo "<script>alert('Product option removed successfully');</script>";
-            header("Location: " . $_SERVER['PHP_SELF']);
+            header("Location: " . $_SERVER['PHP_SELF'] . "?notify=6");
             exit();
-        } else {
-            echo "<script>alert('Failed to delete product option.');</script>";
         }
     }
 }
@@ -65,10 +61,6 @@ if (isset($_POST['update_cart']) || isset($_POST['checkout'])) {
                               JOIN product_options po ON cd.option_id = po.option_id
                               WHERE cd.product_id = ? AND cd.userid = ? AND cd.option_id = ?";
         $stmt = $conn->prepare($update_cart_query);
-        if (!$stmt) {
-            echo "<script>alert('Failed to prepare select query for product ID $product_id and option ID $option_id.');</script>";
-            continue;
-        }
         $stmt->bind_param("iis", $product_id, $userid, $option_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -84,29 +76,22 @@ if (isset($_POST['update_cart']) || isset($_POST['checkout'])) {
             // Update the cart with the new quantity and recalculated price
             $update_price_query = "UPDATE cart_details SET quantity = ?, price = ? WHERE product_id = ? AND userid = ? AND option_id = ?";
             $stmt = $conn->prepare($update_price_query);
-            if (!$stmt) {
-                echo "<script>alert('Failed to prepare update query for product ID $product_id and option ID $option_id.');</script>";
-                continue;
-            }
             $stmt->bind_param("iiisi", $quantity, $total_price, $product_id, $userid, $option_id);
             if ($stmt->execute()) {
                 $update_success = true;
-            } else {
-                echo "<script>alert('Failed to update quantity and price for product ID $product_id and option ID $option_id.');</script>";
             }
         }
     }
 
     if ($update_success) {
-        echo "<script>
-                alert('Cart updated successfully!');
-                window.location.href = window.location.href; // Refresh the page
-              </script>";
+
+header("Location: " . $_SERVER['PHP_SELF'] . "?notify=7"); // Refresh the page with notify flag
+
     }
 
     if (isset($_POST['checkout'])) {
         // Proceed to checkout after updating cart
-        header("Location: checkout.php?user_id=$userid");
+        header("Location: checkout.php?user_id=$userid&?notify=7");
         exit();
     }
 }
@@ -143,7 +128,7 @@ if (isset($run_cart) && $run_cart->num_rows > 0) {
         echo "<tr data-product-id='$pro_id' data-option-id='$option_id' data-price='$baseprice'>
                 <td class='product-remove'>
                     <a href='" . $_SERVER['PHP_SELF'] . "?remove_product=$pro_id&option_id=$option_id&confirm_delete' 
-                       onclick='return confirm(\"Are you sure you want to delete this product option?\")'>Cancel</a>
+                       onclick='return confirm(\"Are you sure you want to remove this product?\")'>Cancel</a>
                 </td>
                 <td class='product-thumbnail' style='width: 30%;'>
                     <img src='./admin/product_images/$image' alt='$product_name'>

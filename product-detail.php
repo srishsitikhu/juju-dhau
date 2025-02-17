@@ -6,8 +6,7 @@ include('database/connect.php');
 if (isset($_POST["cart-product"])) {
     if (!isset($_SESSION["userid"])) {
         echo "<script>
-                alert('Please log in to add items to the cart');
-                window.location.href = 'form-box.php';
+                window.location.href = 'form-box.php?notify=3';
             </script>";
     } else {
         // Sanitize and validate inputs
@@ -35,20 +34,16 @@ if (isset($_POST["cart-product"])) {
             $check_result = mysqli_query($conn, $check_cart_query);
 
             if (mysqli_num_rows($check_result) > 0) {
-                echo "<script>alert('Item already in cart');</script>";
+                // Redirect to the same page with notify=15
+                header("Location: " . $_SERVER['PHP_SELF'] . "?notify=14");
+                exit();
             } else {
                 // Insert into cart
                 $insert_query = "INSERT INTO `cart_details` (product_id, userid, option_id, price) VALUES ($get_product_id, '$userid', $option_id, $price)";
                 if (mysqli_query($conn, $insert_query)) {
-                    echo "<script>alert('Item added to cart successfully');</script>";
-                    echo "<script>window.open('index.php', '_self');</script>";
-                } else {
-                    echo "<script>alert('Error adding item to cart');</script>";
-                    echo "<script>console.log('MySQL Error: " . mysqli_error($conn) . "');</script>";
+                    echo "<script>window.location.href = '" . $_SERVER['PHP_SELF'] . "?notify=13';</script>";
                 }
             }
-        } else {
-            echo "<script>alert('Invalid product or option selected');</script>";
         }
     }
 }
