@@ -635,7 +635,8 @@ form a{
 .product-box p {
   display: -webkit-box;    
   -webkit-box-orient: vertical; 
-  -webkit-line-clamp: 2;      
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;            
   text-overflow: ellipsis;        
 }
@@ -728,7 +729,13 @@ form a{
   border-radius: 5px;
   cursor: pointer;
 }
-
+.shop-title{
+  text-decoration: underline;
+  font-size: 30px;
+  font-weight: 900;
+  color: #111;
+  margin-bottom: 20px;
+}
 
 
 /* Reset some default styling */
@@ -818,12 +825,87 @@ body {
   border-color: #bd2130;
 }
 
-.container single-product-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
+/* about us */
+ .about-us-section {
+        background-color: #f8f9fa;
+        padding: 60px 0;
+    }
 
+    .about-us-section h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        text-decoration: underline;
+    }
+
+    .about-us-section p.lead {
+        font-size: 18px;
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 30px;
+    }
+
+    .about-us-section h3 {
+        margin-top: 30px;
+        color: #000;
+        text-decoration: underline;
+    }
+
+    .about-us-section ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .about-us-section ul li {
+        background: #000;
+        color: #fff;
+        padding: 10px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        display: inline-block;
+        width: 150px;
+        text-align: center;
+    }
+
+/* contact us */
+        .contact-us-section {
+            background: #f8f9fa;
+            padding: 60px 0;
+        }
+        .contact-us-section h2 {
+            text-align: center;
+        margin-bottom: 20px;
+        text-decoration: underline;
+        }
+        .card {
+            border-radius: 10px;
+            border: none;
+            transition: 0.3s;
+        }
+        .card:hover {
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .contact-info p {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+        .contact-info a {
+            text-decoration: none;
+            color: #000;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        .btn-primary {
+            background: #000;
+            border: none;
+            transition: 0.3s;
+        }
+        .btn-primary:hover {
+            background: #000;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
 
 

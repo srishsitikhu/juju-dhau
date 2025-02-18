@@ -12,6 +12,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 <section class="shop-section py-5 my-5">
     <div class="container">
+        <h2 class="shop-title text-center mb-4">Shop List</h2>
         <div class="row g-5">
             <?php foreach ($products as $index => $product): ?>
                 <div class='col-4'>

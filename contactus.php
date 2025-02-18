@@ -1,37 +1,49 @@
 <?php
 include("header.php"); // Include header for navigation
+?>
 
-// Contact Us Section
-echo "<section class='contact-us-section padding-top-section'>
-        <div class='container'>
-            <h2 class='heading underline'>Contact Us</h2>
-            <p class='lead'>We would love to hear from you! Please fill out the form below or contact us via the provided information.</p>
-            
-            <div class='contact-details'>
-                <h3>Our Office</h3>
-                <p><strong>Address:</strong> 1234 Street Name, City, Country</p>
-                <p><strong>Phone:</strong> +123 456 7890</p>
-                <p><strong>Email:</strong> contact@website.com</p>
+<section class="contact-us-section">
+    <div class="container">
+        <h2>Contact Us</h2>
+        <p class="text-center lead">We would love to hear from you! Fill out the form below or reach us through the given details.</p>
+
+        <div class="row mt-5">
+            <!-- Contact Details -->
+            <div class="col-md-5">
+                <div class="card shadow p-4">
+                    <h3 class="text-center text-secondary">📍 Our Office</h3>
+                    <div class="contact-info">
+                        <p><strong>Address:</strong> Bhaktapur</p>
+                        <p><strong>Phone:</strong> 9822222222</p>
+                        <p><strong>Email:</strong> <a href="mailto:jujudhau@gmail.com"> jujudhau@gmail.com</a></p>
+                    </div>
+                </div>
             </div>
-
-            <h3>Contact Form</h3>
-            <form action='process_contact.php' method='POST'>
-                <div class='form-group'>
-                    <label for='name'>Name</label>
-                    <input type='text' id='name' name='name' class='form-control' required>
+`
+            <!-- Contact Form -->
+            <div class="col-md-7">
+                <div class="card shadow p-4">
+                    <h3 class="text-center text-secondary">📩 Send Us a Message</h3>
+                    <form action="process_contact.php" method="POST">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea id="message" name="message" class="form-control" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                    </form>
                 </div>
-                <div class='form-group'>
-                    <label for='email'>Email</label>
-                    <input type='email' id='email' name='email' class='form-control' required>
-                </div>
-                <div class='form-group'>
-                    <label for='message'>Message</label>
-                    <textarea id='message' name='message' class='form-control' rows='4' required></textarea>
-                </div>
-                <button type='submit' class='btn btn-primary'>Submit</button>
-            </form>
+            </div>
         </div>
-      </section>";
-
+    </div>
+</section>
+<?php
 include("footer.php"); // Include footer for the page
 ?>
