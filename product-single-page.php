@@ -12,9 +12,9 @@ if (isset($_POST["cart-product"])) {
         </script>";
     } else {
 
-        // Get product ID and user ID
-        $get_product_id = (int) $_POST['product_id']; // Ensure product ID is an integer
-        $userid = mysqli_real_escape_string($conn, $_SESSION["userid"]); // Sanitize the user ID
+
+        $get_product_id = (int) $_POST['product_id']; 
+        $userid = mysqli_real_escape_string($conn, $_SESSION["userid"]); 
 
         // Get the selected option (option_id) from the form
         $option_id = intval($_POST['liter']); // Get the selected option_id directly
@@ -52,11 +52,11 @@ if (isset($_POST["cart-product"])) {
     }
 }
 
-// Get the product ID from the URL
+
 if (isset($_GET['id'])) {
     $product_id = intval($_GET['id']);
 
-    // Query the database for the selected product
+
     $query = "SELECT * FROM `products` WHERE `product_id` = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $product_id);
@@ -67,7 +67,7 @@ if (isset($_GET['id'])) {
     if ($product):
         $option_ids = explode(',', $product['product_options']);
 
-        // Prepare a query to fetch product options
+
         $option_ids_placeholder = implode(',', array_map('intval', $option_ids)); // Sanitize option IDs
         $select_options = "SELECT * FROM `product_options` WHERE `option_id` IN ($option_ids_placeholder)";
         $options_result = mysqli_query($conn, $select_options);
@@ -115,7 +115,7 @@ if (isset($_GET['id'])) {
                 // Get the base price from the hidden field
                 const basePrice = parseFloat(document.getElementById("current-price").dataset.basePrice);
 
-                // Get the selected option's price from the data attribute
+                // Get the selected option's price from the data attribut`e
                 const selectedOptionPrice = parseFloat(selectedSize.getAttribute("data-option-name"));
 
                 // Calculate the new price based on the selected option's price

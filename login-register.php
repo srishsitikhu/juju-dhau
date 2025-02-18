@@ -17,7 +17,7 @@ if (isset($_POST['sign_up'])) {
     // Attempt to execute the query
     if ($conn->query($sql) === TRUE) {
         // Registration successful
-        header("Location: form-box.php?notify=1");
+        header("Location: index.php?notify=1");
     } 
 }
 

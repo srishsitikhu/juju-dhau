@@ -1,23 +1,4 @@
 <?php include "header.php"; ?>
-<?php
-if (isset($_GET['notify'])) {
-    $message = ($_GET['notify'] == 3) ? "Please login to continue" : ($_GET['notify'] == 4 ? "Invalid email or password" : "");
-    $icon = ($_GET['notify'] == 3) ? "fas fa-sign-in-alt" : ($_GET['notify'] == 4 ? "fas fa-times-circle" : "fas fa-exclamation-circle");
-    if ($message) {
-        echo "<script>
-            $(document).ready(function () {
-                $('#notification-container .alert')
-                    .addClass('alert-danger show')
-                    .find('.notifyMsg')
-                    .text('$message');
-                $('#notification-container .alert i')
-                    .addClass('$icon')
-                    .css('color', 'red');
-            });
-        </script>";
-    }
-}
-?>
 
 
 

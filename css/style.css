@@ -309,14 +309,19 @@ nav {
 .product {
   background-color: whitesmoke;
   position: relative;
+  overflow: hidden;
+}
+.product-item > div{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+
 }
 .productImg {
   width: 50%;
 }
 .productDetail {
-  position: absolute;
-  top: 10%;
-  right: 0;
   width: 40%;
   padding: 50px;
 }
@@ -601,7 +606,7 @@ form a{
 .img-cover{
   height: 100%;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .product-box {
@@ -813,7 +818,11 @@ body {
   border-color: #bd2130;
 }
 
-/* cart quantity */
+.container single-product-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 
 

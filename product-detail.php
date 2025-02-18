@@ -77,29 +77,32 @@ while ($row = mysqli_fetch_assoc($result)) {
         $options = mysqli_fetch_all($options_result, MYSQLI_ASSOC);
     ?>
     <div class="product-item" data-base-price="<?php echo htmlspecialchars($product['base_price']); ?>" data-index="<?php echo $index; ?>"> 
-        <img src="admin/product_images/<?php echo htmlspecialchars($product['image_path']); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>" class="sliderImage">
-        <div class="productDetail">
-            <h1 class="productTitle"><?php echo htmlspecialchars($product['title']); ?></h1>
-            <h2 class="productPrice">RS <?php echo htmlspecialchars($product['base_price']); ?></h2>
-            <div class="productDisc"><?php echo htmlspecialchars($product['description']); ?></div>
-            <form action="" method="post">
-                <div class="sizes">
-                    <?php foreach ($options as $optionIndex => $option): ?>
-                        <div class="size">
-                            <input type="radio" name="option_id" 
-                                   id="option_<?php echo $index; ?>_<?php echo htmlspecialchars($option['option_id']); ?>" 
-                                   value="<?php echo htmlspecialchars($option['option_id']); ?>" 
-                                   data-option-name="<?php echo htmlspecialchars($option['option_name']); ?>" 
-                                   onchange="updatePrice(this)" <?php echo $optionIndex === 0 ? 'checked' : ''; ?>>
-                            <label for="option_<?php echo $index; ?>_<?php echo htmlspecialchars($option['option_id']); ?>">
-                                <?php echo htmlspecialchars($option['option_name']); ?> ltr
-                            </label>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['product_id']); ?>">
-                <button class="productButton" type="submit" name="cart-product">ADD TO CART</button>
-            </form>
+
+        <div>
+            <img src="admin/product_images/<?php echo htmlspecialchars($product['image_path']); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>" class="sliderImage">
+            <div class="productDetail">
+                <h1 class="productTitle"><?php echo htmlspecialchars($product['title']); ?></h1>
+                <h2 class="productPrice">RS <?php echo htmlspecialchars($product['base_price']); ?></h2>
+                <div class="productDisc"><?php echo htmlspecialchars($product['description']); ?></div>
+                <form action="" method="post">
+                    <div class="sizes">
+                        <?php foreach ($options as $optionIndex => $option): ?>
+                            <div class="size">
+                                <input type="radio" name="option_id"
+                                       id="option_<?php echo $index; ?>_<?php echo htmlspecialchars($option['option_id']); ?>"
+                                       value="<?php echo htmlspecialchars($option['option_id']); ?>"
+                                       data-option-name="<?php echo htmlspecialchars($option['option_name']); ?>"
+                                       onchange="updatePrice(this)" <?php echo $optionIndex === 0 ? 'checked' : ''; ?>>
+                                <label for="option_<?php echo $index; ?>_<?php echo htmlspecialchars($option['option_id']); ?>">
+                                    <?php echo htmlspecialchars($option['option_name']); ?> ltr
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['product_id']); ?>">
+                    <button class="productButton" type="submit" name="cart-product">ADD TO CART</button>
+                </form>
+            </div>
         </div>
     </div>
     <?php endforeach; ?>

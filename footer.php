@@ -56,7 +56,6 @@ include("database/connect.php");
 </footer>
 
 <script src="js/jquery.js"></script>
-<script src="js/notify.js"></script>
 <script src="js/user_login.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/search.js"></script>
