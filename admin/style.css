@@ -442,4 +442,6 @@ color: var(--clr-dark);
 }
 /* // form css */
  /* General Form Styling */
- 
+ .sidebar{
+    display: flex;
+ }

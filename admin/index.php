@@ -41,23 +41,23 @@ if (!isset($_SESSION['admin'])) {
                     </span>
                     <h3>Dashboard</h3>
                 </a>
-                <a href="customer/customer.php" class="active">
+                <a href="order_list.php" class="active">
                     <span class="material-symbols-outlined">
-                        person_outline
+                        shopping_cart
                     </span>
-                    <h3>Customer</h3>
+                    <h3>Orders</h3>
                 </a>
-                <a href="Product/product.php">
+                <a href="product.php">
                     <span class="material-symbols-outlined">
                         receipt_long
                     </span>
                     <h3>Products</h3>
                 </a>
-                <a href="#">
+                <a href="contactus.php">
                     <span class="material-symbols-outlined">
-                        settings
+                        contact_support
                     </span>
-                    <h3>setting</h3>
+                    <h3>Contact us</h3>
                 </a>
                 <a href="insert_product.php">
                     <span class="material-symbols-outlined">
@@ -65,12 +65,19 @@ if (!isset($_SESSION['admin'])) {
                     </span>
                     <h3>Add Product</h3>
                 </a>
+                 <a href="user.php">
+                    <span class="material-symbols-outlined">
+                        person_outline
+                    </span>
+                    <h3>Users</h3>
+                </a>
                 <a href="login/logout.php">
                     <span class="material-symbols-outlined">
                         logout
                     </span>
                     <h3>Logout</h3>
                 </a>
+               
 
             </div>
         </div>

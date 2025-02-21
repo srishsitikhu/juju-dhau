@@ -156,7 +156,7 @@ nav {
 .sliderWrapper {
   display: flex;
   width: 500vw;
-  transition: transform 1s ease-in-out;
+  transition: transform 0.5s ease-in-out;
 }
 .menuItem::after {
   content: "";
@@ -894,23 +894,22 @@ body {
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
+.contact-response {
+  max-width: 600px;
+  margin: 100px auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  text-align: center;
+}
 
-        .contact-response {
-            max-width: 600px;
-            margin: 100px auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            text-align: center;
-        }
-      
-        .success-icon {
-            color: #28a745;
-        }
-        .error-icon {
-            color: #dc3545;
-        }
-        .btn-back {
-            margin-top: 20px;
-        }
+.success-icon {
+  color: #28a745;
+}
+.error-icon {
+  color: #dc3545;
+}
+.btn-back {
+  margin-top: 20px;
+}
