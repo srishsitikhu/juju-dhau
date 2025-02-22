@@ -35,10 +35,10 @@ if (isset($_POST["cart-product"])) {
 
             if (mysqli_num_rows($check_result) > 0) {
                 // Redirect to the same page with notify=15
-                header("Location: " . $_SERVER['PHP_SELF'] . "?notify=14");
+                echo "<script>window.location.href = '" . $_SERVER['PHP_SELF'] . "?notify=14';</script>";
                 exit();
             } else {
-                // Insert into cart
+                // Insert into cart`
                 $insert_query = "INSERT INTO `cart_details` (product_id, userid, option_id, price) VALUES ($get_product_id, '$userid', $option_id, $price)";
                 if (mysqli_query($conn, $insert_query)) {
                     echo "<script>window.location.href = '" . $_SERVER['PHP_SELF'] . "?notify=13';</script>";
