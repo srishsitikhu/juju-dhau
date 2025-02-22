@@ -10,9 +10,13 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 ?>
 
-<section class="shop-section py-5 my-5">
+<section class="shop-section">
+    <div class="shop-container">
+        <h1 class="shop-title
+        text-center mb-4">Shop List</h1>
+        <p class="text-center">Browse our exclusive collection of products and find the best deals on your favorite items.</p>
+    </div>
     <div class="container">
-        <h2 class="shop-title text-center mb-4">Shop List</h2>
         <div class="row g-5">
             <?php foreach ($products as $index => $product): ?>
                 <div class='col-4'>
@@ -21,6 +25,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             <?php endforeach; ?>
         </div>
     </div>
+    <div class="section-gaps"></div>
 </section>
 
 <?php include('footer.php'); ?>

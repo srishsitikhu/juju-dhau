@@ -57,11 +57,14 @@ include("header.php"); // Include header for navigation
 <body>
 
     <section class="contact-us-section">
+        <div class="contactus-container">
+            <div class="contact-heading">
+                <h1>Contact Us</h1>
+                <p class="text-center lead">We would love to hear from you! Fill out the form below or reach us through the
+                    given details.</p>
+            </div>
+        </div>
         <div class="container">
-            <h2>Contact Us</h2>
-            <p class="text-center lead">We would love to hear from you! Fill out the form below or reach us through the
-                given details.</p>
-
             <div class="row mt-5">
                 <!-- Contact Details -->
                 <div class="col-md-5">
@@ -102,6 +105,8 @@ include("header.php"); // Include header for navigation
             </div>
         </div>
     </section>
+<div class="section-gaps"></div>
+    
 
 
 </body>
