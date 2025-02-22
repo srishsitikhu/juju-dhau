@@ -68,10 +68,12 @@ if (isset($_GET['delete_order_id'])) {
 
 // Fetch all orders for the logged-in user
 $order_query = "
-    SELECT o.order_id, o.total_amount, o.order_date, o.quantity, p.title ,o.status
+    SELECT o.order_id, o.total_amount, o.order_date, p.title ,o.status, od.price , od.quantity,
+    po.option_name
     FROM orders o
     JOIN order_details od ON o.order_id = od.order_id
     JOIN products p ON od.product_id = p.product_id
+    JOIN product_options po ON od.option_id = po.option_id
     WHERE o.userid = ?
     ORDER BY o.order_date DESC";
 
@@ -90,6 +92,7 @@ if ($order_result->num_rows > 0) {
                 <tr>
                     <th>Order ID</th>
                     <th>Product</th>
+                    <th>litre</th>
                     <th>Date</th>
                     <th>Payment Method</th>
                     <th>Total Items</th>
@@ -104,9 +107,11 @@ if ($order_result->num_rows > 0) {
         
         $order_id = $row['order_id'];
         $order_name = $row['title'];
+        $option = $row['option_name'];
         $order_date = htmlspecialchars($row['order_date']);
         $payment_method = "Cash on Delivery";
         $item_count = $row['item_count'];
+        $price= $row['price'];
         $total_amount = number_format($row['total_amount'], 2);
         $status = $row['status'];
         $quantity= $row['quantity'];
@@ -114,10 +119,11 @@ if ($order_result->num_rows > 0) {
         echo "<tr>
             <td>" . ($id++) . "</td>
             <td>$order_name</td>
+            <td>$option</td>
                 <td>$order_date</td>
                 <td>$payment_method</td>
                 <td>$quantity</td>
-                <td>Rs. $total_amount</td>
+                <td>Rs. $price</td>
                 <td>$status</td>
                 <td>
                     <a href='order-success.php?order_id=$order_id' class='btn btn-info'>View Details</a>

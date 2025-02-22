@@ -1,19 +1,12 @@
 <?php
-session_start();
+@session_start();
+include 'header.php';
 include("../database/connect.php");
 ?>
-<!DOCTYPE html>
-<html lang="en">
+<div class="container-fluid">
+    <div class="d-flex gap-3">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="style.css">
-</head>
 
-<body>
-    <div class="container-fluid">
         <?php include('sidebar.php'); ?>
         <div class="main">
             <h1>Dashboard</h1>
@@ -140,6 +133,5 @@ include("../database/connect.php");
             </div>
         </div>
     </div>
-</body>
-
-</html>
+</div>
+<?php include 'footer.php'; ?>

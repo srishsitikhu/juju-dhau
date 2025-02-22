@@ -1,6 +1,6 @@
 <?php
 // Start the session
-session_start();
+@session_start();
 
 // Destroy all session data
 session_unset();

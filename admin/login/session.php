@@ -1,6 +1,6 @@
 <?php
 // Start session at the top before any output
-session_start();
+@session_start();
 
 // Check if the admin session exists
 if (!isset($_SESSION['admin'])) {

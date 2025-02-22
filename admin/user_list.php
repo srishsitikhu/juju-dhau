@@ -1,6 +1,6 @@
 <?php
 // Start session at the top before any output
-session_start();
+@session_start();
 
 // Check if the admin session exists
 if (!isset($_SESSION['admin'])) {
@@ -9,6 +9,8 @@ if (!isset($_SESSION['admin'])) {
     exit;
 }
 
+// Include header
+include 'header.php';
 // Include database connection
 include '../database/connect.php';
 
@@ -17,26 +19,6 @@ $sql = "SELECT * FROM user";
 $result = $conn->query($sql);
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User List</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        .table-responsive {
-            overflow-x: auto;
-        }
-        .table th, .table td {
-            vertical-align: middle;
-        }
-    </style>
-</head>
-`
-<body>
     <div class="container-fluid">
         <div class="row">
             <!-- Include Sidebar -->
@@ -87,6 +69,5 @@ $result = $conn->query($sql);
             </div>
         </div>
     </div>
-</body>
 
-</html>
+<?php include 'footer.php'; ?>

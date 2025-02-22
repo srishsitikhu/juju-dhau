@@ -1,4 +1,5 @@
 <?php
+include 'header.php';
 include 'database/connect.php';
 
 // Handle Approve button click
@@ -23,9 +24,9 @@ if (isset($_GET['Id'])) {
 $sql = "
     SELECT 
         orders.order_id as id, 
+        orders.address,
         user.name, 
         user.number, 
-        user.address, 
         products.title as Product, 
         products.base_price as Unit_Price, 
         products.image_path AS Image, 
@@ -55,32 +56,6 @@ $sql = "
 
 $result = $conn->query($sql);
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order List</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Adjust the main content to accommodate the sidebar */
-        .main-content {
-            margin-left: 250px;
-            /* Adjust this value based on your sidebar width */
-            padding: 20px;
-            /* Add padding for better spacing */
-        }
-
-        /* Ensure the table is responsive */
-        .table-responsive {
-            overflow-x: auto;
-        }
-    </style>
-</head>
-
-<body>
     <div class="container-fluid">
         <div class="row">
             <!-- Include the sidebar -->
@@ -147,6 +122,4 @@ $result = $conn->query($sql);
             </div>
         </div>
     </div>
-</body>
-
-</html>
+<?php include 'footer.php'; ?>

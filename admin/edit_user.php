@@ -1,5 +1,6 @@
 <?php
-session_start();
+@session_start();
+include 'header.php';
 include 'database/connect.php';
 
 if (!isset($_GET['id'])) {
@@ -36,17 +37,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit User</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body>
     <div class="d-flex">
         <!-- Include the sidebar -->
         <?php include 'sidebar.php'; ?>
@@ -82,6 +72,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </div>
-</body>
 
-</html>
+    <?php include 'footer.php'; ?>
