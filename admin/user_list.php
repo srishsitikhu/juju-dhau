@@ -44,7 +44,7 @@ $result = $conn->query($sql);
 
             <!-- Main Content -->
             <div class="main-content-user">
-                <h2 class="my-4">User List</h2>
+                <h2 class="my-4">Customer List</h2>
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered">
                         <thead class="table-dark">

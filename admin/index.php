@@ -1,3 +1,7 @@
+<?php
+session_start();
+include("../database/connect.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -13,135 +17,124 @@
         <?php include('sidebar.php'); ?>
         <div class="main">
             <h1>Dashboard</h1>
-            <div class="date">
-                <input type="date">
-            </div>
+
             <div class="insight">
-                <!-- Sales -->
                 <div class="sales">
                     <span class="material-symbols-outlined">trending_up</span>
                     <div class="middle">
                         <div class="mleft">
-                            <h3>Today's Sales</h3>
-                            <h1>25,050</h1>
-                        </div>
-                        <div class="progress">
-                            <svg>
-                                <circle r="30" cy="40" cx="40"></circle>
-                            </svg>
-                            <div class="number">80%</div>
+                            <?php
+                            $sales_query = "SELECT COUNT(*) AS total_sales FROM orders WHERE status = 'approved'";
+                            $sales_result = $conn->query($sales_query);
+                            $total_sales = $sales_result->fetch_assoc()['total_sales'] ?? 0;
+                            ?>
+                            <h3>Total Sales</h3>
+                            <h1><?php echo $total_sales; ?></h1>
                         </div>
                     </div>
-                    <small>Last 24 Hr</small>
                 </div>
-                <!-- Expenses -->
                 <div class="expenses">
                     <span class="material-symbols-outlined">local_mall</span>
                     <div class="middle">
                         <div class="mleft">
-                            <h3>Today's Expenses</h3>
-                            <h1>12,500</h1>
+                            <?php
+                            $pending_query = "SELECT COUNT(*) AS total_pending FROM orders WHERE status = 'pending'";
+                            $pending_result = $conn->query($pending_query);
+                            $total_pending = $pending_result->fetch_assoc()['total_pending'] ?? 0;
+                            ?>
+                            <h3>Total pending</h3>
+                            <h1><?php echo $total_pending; ?></h1>
                         </div>
-                        <div class="progress">
-                            <svg>
-                                <circle r="30" cy="40" cx="40"></circle>
-                            </svg>
-                            <div class="number">65%</div>
-                        </div>
+
                     </div>
-                    <small>Last 24 Hr</small>
+
                 </div>
-                <!-- Income -->
                 <div class="income">
                     <span class="material-symbols-outlined">stacked_line_chart</span>
                     <div class="middle">
                         <div class="mleft">
-                            <h3>Today's Income</h3>
-                            <h1>37,550</h1>
+                            <?php
+                            $users_query = "SELECT COUNT(*) AS total_users FROM user";
+                            $users_result = $conn->query($users_query);
+                            $total_users = $users_result->fetch_assoc()['total_users'] ?? 0;
+                            ?>
+                            <h3>Total Customer</h3>
+                            <h1><?php echo $total_users; ?></h1>
                         </div>
-                        <div class="progress">
-                            <svg>
-                                <circle r="30" cy="40" cx="40"></circle>
-                            </svg>
-                            <div class="number">90%</div>
-                        </div>
+
                     </div>
-                    <small>Last 24 Hr</small>
                 </div>
             </div>
-            <!-- Recent Orders -->
+
             <div class="recentorder">
                 <h1>Recent Orders</h1>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Product Name</th>
-                            <th>Product Number</th>
-                            <th>Payments</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Matkadhau</td>
-                            <td>456</td>
-                            <td>Due</td>
-                            <td class="warning">Pending</td>
-                            <td class="primary">Details</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <?php
+                $order_query = "
+                    SELECT o.order_id, o.total_amount, o.order_date, od.quantity, p.title, o.status
+                    FROM orders o
+                    JOIN order_details od ON o.order_id = od.order_id
+                    JOIN products p ON od.product_id = p.product_id
+                    ORDER BY o.order_date DESC";
+
+                if ($result = $conn->query($order_query)) {
+                    if ($result->num_rows > 0) {
+                        echo "<table class='table'>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product</th>
+                    <th>Date</th>
+                    <th>Payment Method</th>
+                    <th>Total Items</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>";
+                        while ($row = $result->fetch_assoc()) {
+                            $order_id = htmlspecialchars($row['order_id']);
+                            $order_name = htmlspecialchars($row['title']);
+                            $order_date = htmlspecialchars($row['order_date']);
+                            $payment_method = "Cash on Delivery";
+                            $quantity = htmlspecialchars($row['quantity']);
+                            $total_amount = number_format($row['total_amount'], 2);
+                            $status = htmlspecialchars($row['status']);
+
+                            echo "<tr>
+            <td>$order_id</td>
+            <td>$order_name</td>
+                <td>$order_date</td>
+                <td>$payment_method</td>
+                <td>$quantity</td>
+                <td>Rs. $total_amount</td>
+                <td>$status</td>
+                <td><a href='order_list.php' style='color: blue;'>details</a></td>
+              </tr>";
+                        }
+                        echo "</tbody>
+          </table>";
+                    } else {
+                        echo "<p>No recent orders found.</p>";
+                    }
+                    $result->free();
+                }
+                ?>
             </div>
         </div>
-        <!-- Right Panel -->
+
         <div class="right">
             <div class="rtop">
                 <button id="menubar">
                     <span class="material-symbols-outlined">menu</span>
                 </button>
-                <div class="theme">
-                    <span class="material-symbols-outlined active">light_mode</span>
-                    <span class="material-symbols-outlined">dark_mode</span>
-                </div>
                 <div class="profile">
                     <div class="info">
-                        <p><b>Robot</b></p>
+                        <p><b><?php echo htmlspecialchars($_SESSION['username'] ?? 'Admin'); ?></b></p>
                         <p>Admin</p>
                     </div>
                     <div class="profilephoto">
                         <img src="image/pphoto.jpg" alt="Profile Photo">
-                    </div>
-                </div>
-            </div>
-            <!-- Recent Updates -->
-            <div class="recentupdate">
-                <h2>Recent Updates</h2>
-                <div class="updates">
-                    <div class="update">
-                        <div class="profilephoto">
-                            <img src="image/pphoto.jpg" alt="Profile Photo">
-                        </div>
-                        <div class="message">
-                            <p><b>Luffy</b> received his order</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Sales Analytics -->
-            <div class="salesanalytics">
-                <h2>Sales Analytics</h2>
-                <div class="itemonline">
-                    <div class="icon">
-                        <span class="material-symbols-outlined">shopping_cart</span>
-                    </div>
-                    <div class="righttext">
-                        <div class="info">
-                            <h3>Online Orders</h3>
-                            <small class="textmuted">Last seen 2 Hours</small>
-                        </div>
-                        <h5 class="danger">-17%</h5>
-                        <h3>3,493</h3>
                     </div>
                 </div>
             </div>

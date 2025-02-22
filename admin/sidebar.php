@@ -9,6 +9,7 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 </head>
 
 <?php
@@ -23,36 +24,58 @@ if (!isset($_SESSION['admin'])) {
 }
 ?>
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const sidebarLinks = document.querySelectorAll(".sidebar a");
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     const sidebarLinks = document.querySelectorAll(".sidebar a");
 
-        // Retrieve last active menu from localStorage
-        const activePage = localStorage.getItem("activeMenu");
+    //     // Retrieve last active menu from localStorage
+    //     const activePage = localStorage.getItem("activeMenu");
 
-        if (activePage) {
-            sidebarLinks.forEach(link => {
-                if (link.getAttribute("href") === activePage) {
-                    link.classList.add("active");
+    //     if (activePage) {
+    //         sidebarLinks.forEach(link => {
+    //             if (link.getAttribute("href") === activePage) {
+    //                 link.classList.add("active");
+    //             } else {
+    //                 link.classList.remove("active");
+    //             }
+    //         });
+    //     }
+
+    //     sidebarLinks.forEach(link => {
+    //         link.addEventListener("click", function () {
+    //             // Remove 'active' class from all links
+    //             sidebarLinks.forEach(link => link.classList.remove("active"));
+
+    //             // Add 'active' class to the clicked link
+    //             this.classList.add("active");
+
+    //             // Store the active menu in localStorage
+    //             localStorage.setItem("activeMenu", this.getAttribute("href"));
+    //         });
+    //     });
+    // });
+ $(document).ready(function () {
+            var currentPath = window.location.pathname.split('/').pop();
+
+            // Sidebar menu active class toggle
+            $('.sidebar a').each(function () {
+                var lastPartHref = $(this).attr('href').split('/').pop();
+                if (currentPath === lastPartHref) {
+                    $(this).addClass('active');
                 } else {
-                    link.classList.remove("active");
+                    $(this).removeClass('active');
                 }
             });
-        }
 
-        sidebarLinks.forEach(link => {
-            link.addEventListener("click", function () {
-                // Remove 'active' class from all links
-                sidebarLinks.forEach(link => link.classList.remove("active"));
-
-                // Add 'active' class to the clicked link
-                this.classList.add("active");
-
-                // Store the active menu in localStorage
-                localStorage.setItem("activeMenu", this.getAttribute("href"));
+            // Category list active class toggle
+            $('.category-list-section .isotop-button a').each(function () {
+                var lastPartHref = $(this).attr('href').split('/').pop();
+                if (currentPath === lastPartHref) {
+                    $(this).addClass('active');
+                } else {
+                    $(this).removeClass('active');
+                }
             });
         });
-    });
-
 </script>
 
 <body>
@@ -66,13 +89,13 @@ if (!isset($_SESSION['admin'])) {
                 </div>
             </div>
             <div class="sidebar">
-                <a href="index.php">
+                <a href="index.php" class="`">
                     <span class="material-symbols-outlined">
                         grid_view
                     </span>
                     <h3>Dashboard</h3>
                 </a>
-                <a href="order_list.php" class="active">
+                <a href="order_list.php">
                     <span class="material-symbols-outlined">
                         person_outline
                     </span>
@@ -100,7 +123,7 @@ if (!isset($_SESSION['admin'])) {
                     <span class="material-symbols-outlined">
                         person_outline
                     </span>
-                    <h3>Users</h3>
+                    <h3>Customer</h3>
                 </a>
                 <a href="login/logout.php">
                     <span class="material-symbols-outlined">

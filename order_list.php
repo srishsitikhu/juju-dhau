@@ -68,7 +68,7 @@ if (isset($_GET['delete_order_id'])) {
 
 // Fetch all orders for the logged-in user
 $order_query = "
-    SELECT o.order_id, o.total_amount, o.order_date, o.quantity, p.title
+    SELECT o.order_id, o.total_amount, o.order_date, o.quantity, p.title ,o.status
     FROM orders o
     JOIN order_details od ON o.order_id = od.order_id
     JOIN products p ON od.product_id = p.product_id
@@ -94,6 +94,7 @@ if ($order_result->num_rows > 0) {
                     <th>Payment Method</th>
                     <th>Total Items</th>
                     <th>Total Amount</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -107,6 +108,7 @@ if ($order_result->num_rows > 0) {
         $payment_method = "Cash on Delivery";
         $item_count = $row['item_count'];
         $total_amount = number_format($row['total_amount'], 2);
+        $status = $row['status'];
         $quantity= $row['quantity'];
 
         echo "<tr>
@@ -116,6 +118,7 @@ if ($order_result->num_rows > 0) {
                 <td>$payment_method</td>
                 <td>$quantity</td>
                 <td>Rs. $total_amount</td>
+                <td>$status</td>
                 <td>
                     <a href='order-success.php?order_id=$order_id' class='btn btn-info'>View Details</a>
                     <a href='order_list.php?delete_order_id=$order_id' class='btn btn-danger' 
