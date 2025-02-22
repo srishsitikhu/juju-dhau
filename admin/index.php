@@ -27,7 +27,7 @@ include("../database/connect.php");
                     </div>
                 </div>
                 <div class="expenses">
-                    <span class="material-symbols-outlined">local_mall</span>
+                    <span class="material-symbols-outlined">hourglass_empty</span>
                     <div class="middle">
                         <div class="mleft">
                             <?php
@@ -43,7 +43,7 @@ include("../database/connect.php");
 
                 </div>
                 <div class="income">
-                    <span class="material-symbols-outlined">stacked_line_chart</span>
+                    <span class="material-symbols-outlined">people</span>
                     <div class="middle">
                         <div class="mleft">
                             <?php
