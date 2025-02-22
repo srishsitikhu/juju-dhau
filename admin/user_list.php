@@ -43,7 +43,7 @@ $result = $conn->query($sql);
             <?php include 'sidebar.php'; ?>
 
             <!-- Main Content -->
-            <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="main-content-user">
                 <h2 class="my-4">User List</h2>
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered">

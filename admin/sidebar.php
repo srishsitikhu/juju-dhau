@@ -22,12 +22,42 @@ if (!isset($_SESSION['admin'])) {
     exit;
 }
 ?>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sidebarLinks = document.querySelectorAll(".sidebar a");
+
+        // Retrieve last active menu from localStorage
+        const activePage = localStorage.getItem("activeMenu");
+
+        if (activePage) {
+            sidebarLinks.forEach(link => {
+                if (link.getAttribute("href") === activePage) {
+                    link.classList.add("active");
+                } else {
+                    link.classList.remove("active");
+                }
+            });
+        }
+
+        sidebarLinks.forEach(link => {
+            link.addEventListener("click", function () {
+                // Remove 'active' class from all links
+                sidebarLinks.forEach(link => link.classList.remove("active"));
+
+                // Add 'active' class to the clicked link
+                this.classList.add("active");
+
+                // Store the active menu in localStorage
+                localStorage.setItem("activeMenu", this.getAttribute("href"));
+            });
+        });
+    });
+
+</script>
 
 <body>
     <div class="container">
         <div class="left">
-
-
             <div class="top">
                 <div class="logo">Juju Dhau</div>
                 <div class="close">
@@ -46,7 +76,7 @@ if (!isset($_SESSION['admin'])) {
                     <span class="material-symbols-outlined">
                         person_outline
                     </span>
-                    <h3>Customer</h3>
+                    <h3>Orders</h3>
                 </a>
                 <a href="product.php">
                     <span class="material-symbols-outlined">
@@ -66,7 +96,7 @@ if (!isset($_SESSION['admin'])) {
                     </span>
                     <h3>Add Product</h3>
                 </a>
-                <a href="user.php">
+                <a href="user_list.php">
                     <span class="material-symbols-outlined">
                         person_outline
                     </span>

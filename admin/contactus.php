@@ -57,7 +57,7 @@ $result = $conn->query($sql);
             <?php include 'sidebar.php'; ?>
 
             <!-- Main Content -->
-            <div class="main-content">
+            <div class="main-content-contact">
                 <h2 class="my-4">Contact Messages</h2>
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered">

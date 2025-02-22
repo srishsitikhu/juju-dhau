@@ -47,10 +47,10 @@ body {
 }
 .container{
     display: grid;
-    width:96%;
+    width:100%;
     gap:1.8rem;
     grid-template-columns: 14rem auto 14rem;
-    margin:0 auto;
+    margin: 0;
 }
 *{
     margin: 0;
@@ -144,6 +144,7 @@ color: var(--clr-dark);
     font-weight: 500;
 }
 .sidebar a{
+    text-decoration: none;
     display: flex;
     color: var(--clr-info-dark);
     margin-left: 2rem;

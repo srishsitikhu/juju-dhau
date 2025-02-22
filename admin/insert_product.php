@@ -1,26 +1,67 @@
 <?php
+// Database connection
 include('../database/connect.php');
 session_start();
 
 // Check if the admin session exists
-if ((!$_SESSION['admin'])) {
+if (!isset($_SESSION['admin'])) {
     // Redirect to login page if session is invalid
-    header('Location:login/login.php');
+    header('Location: login/login.php');
     exit;
 }
 
+// Handle form submission
 if (isset($_POST['insert_product'])) {
     $list_title = $_POST['list_title'];
     $title = $_POST['title'];
     $base_price = $_POST['base_price'];
     $description = $_POST['description'];
 
-    $img = $_FILES['img']['name'];
-    $img_temp = $_FILES['img']['tmp_name'];
-    move_uploaded_file($img_temp, "./product_images/$img");
+    // Handle image upload
+    if (isset($_FILES['img']) && $_FILES['img']['error'] == 0) {
+        $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
 
-    // Insert product
-    $sql = "INSERT INTO `products` (`list_title`, `title`, `base_price`, `description`, `image_path`, `date_added`, `product_options`) VALUES ('$list_title', '$title', '$base_price', '$description', '$img', NOW(), NULL)";
+        $img = $_FILES['img']['name'];
+        $img_temp = $_FILES['img']['tmp_name'];
+        $img_type = $_FILES['img']['type'];
+
+        // Check file type
+        if (!in_array($img_type, $allowed_types)) {
+            echo "<script>alert('Only JPG, PNG, and GIF images are allowed.');
+            window.location.href='index.php'; 
+            </script>";
+            exit;
+        }
+
+        // Generate a unique filename
+        $img = uniqid() . '_' . basename($img);
+
+        $upload_dir = "./product_images/";
+
+        // Ensure the upload directory exists
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0755, true);
+        }
+
+        // Move the uploaded file to the desired directory
+        if (move_uploaded_file($img_temp, $upload_dir . $img)) {
+            // File uploaded successfully
+        } else {
+            echo "<script>alert('Failed to upload image.');
+            window.location.href='index.php'; 
+            </script>";
+            exit;
+        }
+    } else {
+        echo "<script>alert('Image upload error.');
+        window.location.href='index.php'; 
+        </script>";
+        exit;
+    }
+
+    // Insert product into the database
+    $sql = "INSERT INTO `products` (`list_title`, `title`, `base_price`, `description`, `image_path`, `date_added`, `product_options`) 
+            VALUES ('$list_title', '$title', '$base_price', '$description', '$img', NOW(), NULL)";
 
     $res = mysqli_query($conn, $sql);
     if (!$res) {
@@ -181,7 +222,6 @@ include('header.php');
         /* Sidebar and Main Content Layout */
         .main-content {
             margin-left: 250px;
-            /* Adjust this value based on your sidebar width */
             padding: 20px;
         }
     </style>
@@ -196,8 +236,7 @@ include('header.php');
                 <div class="insert_product">
                     <form action="" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
                         <div class="form-group">
-                            <label for="list_title"><i class="fas fa-heading"></i> List Title <span
-                                    class="required"></span></label>
+                            <label for="list_title"><i class="fas fa-heading"></i> List Title <span class="required"></span></label>
                             <input type="text" id="list_title" required name="list_title" class="form-control" />
                             <small id="list_title_error" class="text-danger"></small>
                         </div>
@@ -207,15 +246,12 @@ include('header.php');
                             <small id="title_error" class="text-danger"></small>
                         </div>
                         <div class="form-group">
-                            <label for="base_price"><i class="fas fa-dollar-sign"></i> Base Price <span
-                                    class="required"></span></label>
-                            <input type="number" step="0.01" id="base_price" required name="base_price"
-                                class="form-control" />
+                            <label for="base_price"><i class="fas fa-dollar-sign"></i> Base Price <span class="required"></span></label>
+                            <input type="number" step="0.01" id="base_price" required name="base_price" class="form-control" />
                             <small id="base_price_error" class="text-danger"></small>
                         </div>
                         <div class="form-group">
-                            <label for="description"><i class="fas fa-align-left"></i> Description <span
-                                    class="required"></span></label>
+                            <label for="description"><i class="fas fa-align-left"></i> Description <span class="required"></span></label>
                             <textarea id="description" required name="description" class="form-control"></textarea>
                             <small id="description_error" class="text-danger"></small>
                         </div>
@@ -262,6 +298,16 @@ include('header.php');
                 isValid = false;
             } else {
                 basePriceError.textContent = "";
+            }
+
+            // Image Validation
+            var img = document.querySelector('input[name="img"]').files[0];
+            var imgError = document.getElementById('img_error');
+            if (!img) {
+                imgError.textContent = "Please select an image";
+                isValid = false;
+            } else {
+                imgError.textContent = "";
             }
 
             return isValid;

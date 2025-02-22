@@ -4,96 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close,grid_view,person_outline,receipt_long,settings,add" /> -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <link rel="stylesheet" href="style.css">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
-<?php
-// Start session at the top before any output
-session_start();
-
-// Check if the admin session exists
-if (!isset($_SESSION['admin'])) {
-    // Redirect to login page if session is invalid
-    header('Location: login/login.php');
-    exit;
-}
-?>
 <body>
-    <div class="container">
-        <div class="left">
-
-
-            <div class="top">
-                <div class="logo">Juju Dhau</div>
-                <div class="close">
-                    <!-- Ensure the icon name is correct -->
-                    <span class="material-symbols-outlined">close</span>
-                </div>
-            </div>
-            <div class="sidebar">
-                <a href="#">
-                    <span class="material-symbols-outlined">
-                        grid_view
-                    </span>
-                    <h3>Dashboard</h3>
-                </a>
-                <a href="order_list.php" class="active">
-                    <span class="material-symbols-outlined">
-                        shopping_cart
-                    </span>
-                    <h3>Orders</h3>
-                </a>
-                <a href="product.php">
-                    <span class="material-symbols-outlined">
-                        receipt_long
-                    </span>
-                    <h3>Products</h3>
-                </a>
-                <a href="contactus.php">
-                    <span class="material-symbols-outlined">
-                        contact_support
-                    </span>
-                    <h3>Contact us</h3>
-                </a>
-                <a href="insert_product.php">
-                    <span class="material-symbols-outlined">
-                        add
-                    </span>
-                    <h3>Add Product</h3>
-                </a>
-                 <a href="user.php">
-                    <span class="material-symbols-outlined">
-                        person_outline
-                    </span>
-                    <h3>Users</h3>
-                </a>
-                <a href="login/logout.php">
-                    <span class="material-symbols-outlined">
-                        logout
-                    </span>
-                    <h3>Logout</h3>
-                </a>
-               
-
-            </div>
-        </div>
+    <div class="container-fluid">
+        <?php include('sidebar.php'); ?>
         <div class="main">
             <h1>Dashboard</h1>
             <div class="date">
                 <input type="date">
             </div>
             <div class="insight">
-                <!-- selling -->
+                <!-- Sales -->
                 <div class="sales">
                     <span class="material-symbols-outlined">trending_up</span>
                     <div class="middle">
                         <div class="mleft">
                             <h3>Today's Sales</h3>
-                            <h1>25,05</h1>
+                            <h1>25,050</h1>
                         </div>
                         <div class="progress">
                             <svg>
@@ -104,49 +34,44 @@ if (!isset($_SESSION['admin'])) {
                     </div>
                     <small>Last 24 Hr</small>
                 </div>
-                <!-- endselling -->
-                <!-- expenses -->
+                <!-- Expenses -->
                 <div class="expenses">
                     <span class="material-symbols-outlined">local_mall</span>
                     <div class="middle">
                         <div class="mleft">
                             <h3>Today's Expenses</h3>
-                            <h1>25,05</h1>
+                            <h1>12,500</h1>
                         </div>
                         <div class="progress">
                             <svg>
                                 <circle r="30" cy="40" cx="40"></circle>
                             </svg>
-                            <div class="number">80%</div>
+                            <div class="number">65%</div>
                         </div>
                     </div>
                     <small>Last 24 Hr</small>
                 </div>
-                <!-- endselling -->
-                <!-- income -->
+                <!-- Income -->
                 <div class="income">
                     <span class="material-symbols-outlined">stacked_line_chart</span>
                     <div class="middle">
                         <div class="mleft">
-                            <h3>Today's income</h3>
-                            <h1>25,05</h1>
+                            <h3>Today's Income</h3>
+                            <h1>37,550</h1>
                         </div>
                         <div class="progress">
                             <svg>
                                 <circle r="30" cy="40" cx="40"></circle>
                             </svg>
-                            <div class="number">80%</div>
+                            <div class="number">90%</div>
                         </div>
                     </div>
                     <small>Last 24 Hr</small>
                 </div>
-                <!-- endselling -->
-
             </div>
-            <!-- endinside -->
-            <!-- startrecentorder -->
+            <!-- Recent Orders -->
             <div class="recentorder">
-                <h1>Recent Order</h1>
+                <h1>Recent Orders</h1>
                 <table>
                     <thead>
                         <tr>
@@ -154,38 +79,22 @@ if (!isset($_SESSION['admin'])) {
                             <th>Product Number</th>
                             <th>Payments</th>
                             <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>Matkadhau</td>
                             <td>456</td>
-                            <td>due</td>
+                            <td>Due</td>
                             <td class="warning">Pending</td>
                             <td class="primary">Details</td>
-
-                        </tr>
-                        <tr>
-                            <td>Matkadhau</td>
-                            <td>456</td>
-                            <td>due</td>
-                            <td class="warning">Pending</td>
-                            <td class="primary">Details</td>
-
-                        </tr>
-                        <tr>
-                            <td>Matkadhau</td>
-                            <td>456</td>
-                            <td>due</td>
-                            <td class="warning">Pending</td>
-                            <td class="primary">Details</td>
-
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <!-- rightside -->
+        <!-- Right Panel -->
         <div class="right">
             <div class="rtop">
                 <button id="menubar">
@@ -199,103 +108,43 @@ if (!isset($_SESSION['admin'])) {
                     <div class="info">
                         <p><b>Robot</b></p>
                         <p>Admin</p>
-                        <small class="textmuted"></small>
                     </div>
                     <div class="profilephoto">
-                        <img src="image/pphoto.jpg" alt="loading fail">
+                        <img src="image/pphoto.jpg" alt="Profile Photo">
                     </div>
                 </div>
             </div>
-            <!-- endtop -->
-            <!-- startrecentupdate -->
+            <!-- Recent Updates -->
             <div class="recentupdate">
-                <h2>Recent Update</h2>
+                <h2>Recent Updates</h2>
                 <div class="updates">
                     <div class="update">
                         <div class="profilephoto">
-                            <img src="image/pphoto.jpg" alt="">
+                            <img src="image/pphoto.jpg" alt="Profile Photo">
                         </div>
                         <div class="message">
-                            <p><b>Luffy </b>Receive his order</p>
+                            <p><b>Luffy</b> received his order</p>
                         </div>
-                    </div>
-                    <div class="update">
-                        <div class="profilephoto">
-                            <img src="image/pphoto.jpg" alt="">
-                        </div>
-                        <div class="message">
-                            <p><b>Luffy </b>Receive his order</p>
-                        </div>
-
-                    </div>
-                    <div class="update">
-                        <div class="profilephoto">
-                            <img src="image/pphoto.jpg" alt="">
-                        </div>
-                        <div class="message">
-                            <p><b>Luffy </b>Receive his order</p>
-                        </div>
-
                     </div>
                 </div>
-
             </div>
-
-            <!-- end recentupdate -->
-            <!-- startsell analytics -->
-
-
+            <!-- Sales Analytics -->
             <div class="salesanalytics">
-                <h2>Sale Analytics</h2>
+                <h2>Sales Analytics</h2>
                 <div class="itemonline">
                     <div class="icon">
                         <span class="material-symbols-outlined">shopping_cart</span>
                     </div>
                     <div class="righttext">
                         <div class="info">
-                            <h3>online order</h3>
+                            <h3>Online Orders</h3>
                             <small class="textmuted">Last seen 2 Hours</small>
                         </div>
                         <h5 class="danger">-17%</h5>
-                        <h3>3493</h3>
-
-                    </div>
-                </div>
-                <div class="itemonline">
-                    <div class="icon">
-                        <span class="material-symbols-outlined">shopping_cart</span>
-                    </div>
-                    <div class="righttext">
-                        <div class="info">
-                            <h3>online order</h3>
-                            <small class="textmuted">Last seen 2 Hours</small>
-                        </div>
-                        <h5 class="danger">-17%</h5>
-                        <h3>3493</h3>
-
-                    </div>
-                </div>
-                <div class="itemonline">
-                    <div class="icon">
-                        <span class="material-symbols-outlined">shopping_cart</span>
-                    </div>
-                    <div class="righttext">
-                        <div class="info">
-                            <h3>online order</h3>
-                            <small class="textmuted">Last seen 2 Hours</small>
-                        </div>
-                        <h5 class="danger">-17%</h5>
-                        <h3>3493</h3>
-
+                        <h3>3,493</h3>
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
         </div>
     </div>
 </body>
