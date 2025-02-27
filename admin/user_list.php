@@ -20,7 +20,7 @@ $result = $conn->query($sql);
 ?>
 
     <div class="container-fluid">
-        <div class="row">
+        <div class="row">`
             <!-- Include Sidebar -->
             <?php include 'sidebar.php'; ?>
 

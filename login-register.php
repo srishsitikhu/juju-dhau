@@ -11,8 +11,9 @@ if (isset($_POST['sign_up'])) {
     $contact = $_POST['userContact'];
     $address = $_POST['userAddress'];
 
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     // Prepare the SQL query
-    $sql = "INSERT INTO user (name, email, password, number, address) VALUES ('$name', '$email', '$password', '$contact', '$address')";
+    $sql = "INSERT INTO user (name, email, password, number, address) VALUES ('$name', '$email', '$hash_password', '$contact', '$address')";
 
     // Attempt to execute the query
     if ($conn->query($sql) === TRUE) {
@@ -31,10 +32,10 @@ if (isset($_POST['sign_in'])) {
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $storedPassword = $row['password'];
+        $hash_password = $row['password'];
 
         // Verify the password
-        if ($storedPassword === $password) {
+        if (password_verify($password, $hash_password)) {
             $_SESSION['name'] = $row['name'];
             $_SESSION['userid'] = $row['id']; // Set the userid in session
 

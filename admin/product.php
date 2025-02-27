@@ -3,12 +3,6 @@
 @session_start();
 
 include 'header.php';
-// Check if the admin session exists
-if ((!$_SESSION['admin'])) {
-    // Redirect to login page if session is invalid
-    header('Location:login/login.php');
-    exit;
-}
 ?>
     <div class="container-fluid">
         <div class="row">

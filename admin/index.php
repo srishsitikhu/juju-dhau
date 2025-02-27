@@ -1,6 +1,7 @@
 <?php
 @session_start();
 include 'header.php';
+include 'asset/notify.php';
 include("../database/connect.php");
 ?>
 <div class="container-fluid">

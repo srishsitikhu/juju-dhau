@@ -66,7 +66,7 @@ if (isset($_POST['update_product'])) {
             mysqli_query($conn, $update_sql);
         }
 
-        echo "<script>alert('Product updated successfully'); window.location.href='index.php';</script>";
+        echo "<script> window.location.href='index.php?notify=14';</script>";
     } else {
         echo "Error: " . mysqli_error($conn);
     }

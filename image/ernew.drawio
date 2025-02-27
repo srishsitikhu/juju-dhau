@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1">
+    <mxGraphModel dx="1443" dy="1007" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" value="&lt;!DOCTYPE html&gt;" style="group" vertex="1" connectable="0" parent="1"/>
+        <mxCell id="1" value="Model" style="group" vertex="1" connectable="0" parent="0"/>
+        <mxCell id="2" value="admin" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" connectable="1" parent="1"/>
+        <mxCell id="3" value="aid (PK)" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="2"/>
+        <mxCell id="4" value="ausername" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="2"/>
+        <mxCell id="5" value="apassword" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="2"/>
+        <mxCell id="6" value="cart_details" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" connectable="1" parent="1"/>
+        <mxCell id="7" value="id (PK)" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="6"/>
+        <mxCell id="8" value="product_id" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="6"/>
+        <mxCell id="9" value="userid (FK)" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="6"/>
+        <mxCell id="10" value="option_id (FK)" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="6"/>
+        <mxCell id="11" value="quantity" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="6"/>
+        <mxCell id="12" value="price" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="6"/>
+        <mxCell id="13" value="contact_us" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" connectable="1" parent="1"/>
+        <mxCell id="14" value="id (PK)" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="13"/>
+        <mxCell id="15" value="name" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="13"/>
+        <mxCell id="16" value="email" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="13"/>
+        <mxCell id="17" value="message" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="13"/>
+        <mxCell id="18" value="created_at" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="13"/>
+        <mxCell id="19" value="orders" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" connectable="1" parent="1"/>
+        <mxCell id="20" value="order_id (PK)" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="19"/>
+        <mxCell id="21" value="userid (FK)" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="19"/>
+        <mxCell id="22" value="total_amount" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="19"/>
+        <mxCell id="23" value="address" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="19"/>
+        <mxCell id="24" value="payment_method" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="19"/>
+        <mxCell id="25" value="order_date" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="19"/>
+        <mxCell id="26" value="status" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="19"/>
+        <mxCell id="27" value="quantity" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="19"/>
+        <mxCell id="28" value="order_details" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" connectable="1" parent="1"/>
+        <mxCell id="29" value="order_detail_id (PK)" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="28"/>
+        <mxCell id="30" value="order_id (FK)" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="28"/>
+        <mxCell id="31" value="product_id (FK)" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="28"/>
+        <mxCell id="32" value="option_id (FK)" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="28"/>
+        <mxCell id="33" value="price" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="28"/>
+        <mxCell id="34" value="quantity" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="28"/>
+        <mxCell id="35" value="products" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" connectable="1" parent="1"/>
+        <mxCell id="36" value="product_id (PK)" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="35"/>
+        <mxCell id="37" value="list_title" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="35"/>
+        <mxCell id="38" value="title" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="35"/>
+        <mxCell id="39" value="base_price" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="35"/>
+        <mxCell id="40" value="description" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="35"/>
+        <mxCell id="41" value="image_path" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="35"/>
+        <mxCell id="42" value="date_added" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="35"/>
+        <mxCell id="43" value="product_options" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" connectable="1" parent="1"/>
+        <mxCell id="44" value="option_id (PK)" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="43"/>
+        <mxCell id="45" value="option_name" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="43"/>
+        <mxCell id="46" value="user" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" connectable="1" parent="1"/>
+        <mxCell id="47" value="id (PK)" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="46"/>
+        <mxCell id="48" value="name" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="46"/>
+        <mxCell id="49" value="email" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="46"/>
+        <mxCell id="50" value="password" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="46"/>
+        <mxCell id="51" value="number" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="46"/>
+        <mxCell id="52" value="address" style="shape=rect;whiteSpace=wrap;html=1;" vertex="1" connectable="0" parent="46"/>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

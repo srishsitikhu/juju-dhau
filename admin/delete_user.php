@@ -13,6 +13,6 @@ if (isset($_GET['id'])) {
     }
 }
 
-header("Location: user_list.php");
+header("Location: user_list.php?notify=13");
 exit;
 ?>

@@ -6,8 +6,7 @@ $result=$conn->query($sql);
 if($result){
     echo"
         <script>
-        alert ('record deleted succesfully');
-         window.location.href='product.php'; 
+         window.location.href='product.php?notify=4'; 
         </script>
 
 

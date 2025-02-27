@@ -28,22 +28,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "UPDATE user SET name='$name', email='$email', number='$number', address='$address' WHERE id=$id";
 
     if ($conn->query($sql) === TRUE) {
-        $_SESSION['message'] = "User updated successfully";
-        header("Location: user_list.php");
+        header("Location: user_list.php?notify=12");
         exit;
     } else {
-        $_SESSION['message'] = "Error updating user: " . $conn->error;
+        $_SESSION['message'] = "Error updating user: {$conn->error}";
     }
 }
 ?>
 
-    <div class="d-flex">
+    <div class="row">
         <!-- Include the sidebar -->
         <?php include 'sidebar.php'; ?>
 
         <!-- Main content -->
-        <div class="main-content-edit-user">
-            <div class="container mt-5">
+        <div class="container">
+            <div class="col mt-5">
                 <h2>Edit User</h2>
                 <form method="POST">
                     <div class="mb-3">

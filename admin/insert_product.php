@@ -79,8 +79,8 @@ if (isset($_POST['insert_product'])) {
             mysqli_query($conn, $update_sql);
         }
 
-        echo "<script>alert('Product inserted successfully');
-        window.location.href='index.php'; 
+        echo "<script>
+        window.location.href='index.php?notify=10'; 
         </script>";
     }
 }

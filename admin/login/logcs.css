@@ -1,6 +1,4 @@
-
-   /* Global Styles */
-
+/* Global Styles */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -12,8 +10,18 @@ body {
   background-color: #f0f0f0;
 }
 
-/* Form Box Styles */
+/* Additional Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
 
+/* Form Box Styles */
 .form-box {
   width: 400px;
   margin: 50px auto;
@@ -25,7 +33,6 @@ body {
 }
 
 /* Form Title Styles */
-
 #title {
   text-align: center;
   margin-bottom: 20px;
@@ -35,7 +42,6 @@ body {
 }
 
 /* Input Field Styles */
-
 .input-field {
   position: relative;
   width: 100%;
@@ -70,13 +76,11 @@ body {
 }
 
 /* Username Input Field Styles */
-
 .input-field input[name="userName"] {
   padding-left: 35px;
 }
 
 /* Error Message Styles */
-
 .error-message {
   color: red;
   font-size: 12px;
@@ -84,12 +88,11 @@ body {
 }
 
 /* Submit Button Styles */
-
 #form-submit {
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  background-color: #0866ff;;
+  background-color: #000;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -97,25 +100,12 @@ body {
 }
 
 #form-submit:hover {
-  background-color: #0654cc;
+  background-color: #333;
 }
 
 /* Font Awesome Styles */
-
-.fa-solid {
-  font-size: 18px;
-  color: #666;
-}
-
-.fa-eye {
+.fa-solid, .fa-eye, .fa-eye-slash {
   font-size: 18px;
   color: #666;
   cursor: pointer;
 }
-
-.fa-eye-slash {
-  font-size: 18px;
-  color: #666;
-  cursor: pointer;
-}
-    

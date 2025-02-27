@@ -12,7 +12,7 @@ if (isset($_GET['Id'])) {
 
     if ($stmt->execute()) {
         // Redirect to the same page to reflect the changes
-        header("Location: order_list.php");
+        header("Location: order_list.php?notify=11");
         exit(); // Prevent further execution
     } else {
         echo "<script>alert('Error updating order status!');</script>";

@@ -34,9 +34,15 @@
         </a>
         <a href="insert_product.php">
             <span class="material-symbols-outlined">
-                add
+                add_circle_outline
             </span>
             <h3>Add Product</h3>
+        </a>
+        <a href="insert_option.php">
+            <span class="material-symbols-outlined">
+                settings
+            </span>
+            <h3>Update Options</h3>
         </a>
         <a href="user_list.php">
             <span class="material-symbols-outlined">
@@ -50,6 +56,5 @@
             </span>
             <h3>Logout</h3>
         </a>
-
     </div>
 </div>
