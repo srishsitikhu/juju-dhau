@@ -19,7 +19,7 @@ if (isset($_POST['update_option'])) {
     $number = mysqli_num_rows($check_result);
 
     if ($number > 0) {
-        header("Location: " . $_SERVER['PHP_SELF'] . "&?notify=5");
+        header("Location: " . $_SERVER['PHP_SELF'] . "?notify=5");
 
     } else {
         $update_query = "UPDATE product_options SET option_name = '$option_name' WHERE option_id = $option_id";

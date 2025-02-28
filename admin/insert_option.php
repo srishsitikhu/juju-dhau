@@ -21,7 +21,7 @@ if (isset($_POST['insert_option'])) {
     $number = mysqli_num_rows($check_result);
 
     if ($number > 0) {
-        header("Location: " . $_SERVER['PHP_SELF'] . "?notify=9");
+        header("Location: " . $_SERVER['PHP_SELF'] . "?notify=5");
     } else {
         $insert_query = "INSERT INTO product_options (option_name) VALUES ('$option_name')";
         $insert_result = mysqli_query($conn, $insert_query);

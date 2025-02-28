@@ -20,8 +20,8 @@ $result = $conn->query($sql);
 ?>
 
     <div class="container-fluid">
-        <div class="row">`
-            <!-- Include Sidebar -->
+        <div class="row">
+            <!-- Include Sidebar -->`
             <?php include 'sidebar.php'; ?>
 
             <!-- Main Content -->
@@ -33,8 +33,6 @@ $result = $conn->query($sql);
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Email</th>
-                                <th>Password</th>
                                 <th>Number</th>
                                 <th>Address</th>
                                 <th>Action</th> <!-- New Action Column -->
@@ -48,8 +46,6 @@ $result = $conn->query($sql);
                                     <tr>
                                         <td>{$row['id']}</td>
                                         <td>{$row['name']}</td>
-                                        <td>{$row['email']}</td>
-                                        <td>{$row['password']}</td>
                                         <td>{$row['number']}</td>
                                         <td>{$row['address']}</td>
                                         <td>

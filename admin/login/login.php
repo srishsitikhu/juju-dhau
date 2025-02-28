@@ -1,5 +1,6 @@
 <script src="../../js/jquery.js"></script>
 <script src="../../css/all.css"></script>
+<link rel="stylesheet" href="../../css/bootstrap.css">
 
 <?php
 @session_start();
