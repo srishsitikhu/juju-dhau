@@ -21,7 +21,7 @@ $result = $conn->query($sql);
 
     <div class="container-fluid">
         <div class="row">
-            <!-- Include Sidebar -->`
+            <!-- Include Sidebar -->
             <?php include 'sidebar.php'; ?>
 
             <!-- Main Content -->

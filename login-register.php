@@ -11,7 +11,7 @@ if (isset($_POST['sign_up'])) {
     $contact = $_POST['userContact'];
     $address = $_POST['userAddress'];
 
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $hash_password = password_hash($password, PASSWORD_DEFAULT);
     // Prepare the SQL query
     $sql = "INSERT INTO user (name, email, password, number, address) VALUES ('$name', '$email', '$hash_password', '$contact', '$address')";
 
